@@ -268,7 +268,7 @@ function round(n: number, digits: number) {
           </label>
           <Transition name="collapse">
             <div v-if="enableFireTime" class="collapse-row">
-              <div class="form-control mt-2 min-h-0 overflow-hidden">
+              <div class="form-control min-h-0 overflow-hidden">
                 <label class="label"><span class="label-text">目標落點時間（24 小時制）</span></label>
                 <div class="flex items-center gap-2">
                   <input
@@ -319,54 +319,54 @@ function round(n: number, digits: number) {
             計算結果
           </span>
 
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="stat place-items-center rounded-box bg-base-200 p-4">
-              <div class="stat-title">
-                距離（km）
-              </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+            <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
               <div class="stat-value font-mono">
                 <Counter :value="round(result.distance, 2)" :places="[10, 1, '.', 0.1, 0.01]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
               </div>
+              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+                距離（km）
+              </span>
             </div>
 
-            <div class="stat place-items-center rounded-box bg-base-200 p-4">
-              <div class="stat-title">
-                方位角
-              </div>
+            <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
               <div class="stat-value font-mono">
                 <Counter :value="round(result.azimuth, 1)" :places="[100, 10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
               </div>
+              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+                方位角
+              </span>
             </div>
 
-            <div class="stat place-items-center rounded-box bg-base-200 p-4">
-              <div class="stat-title">
-                仰角
-              </div>
+            <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
               <div class="stat-value font-mono">
                 <Counter :value="round(result.elevation, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
               </div>
+              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+                仰角
+              </span>
             </div>
           </div>
 
           <Transition name="collapse">
             <div v-if="enableFireTime" class="collapse-row">
-              <div class="grid grid-cols-2 gap-4 mt-4 min-h-0 overflow-hidden">
-                <div class="stat place-items-center rounded-box bg-base-200 p-4">
-                  <div class="stat-title">
-                    飛行時間（秒）
-                  </div>
+              <div class="grid grid-cols-2 gap-4 min-h-0 overflow-hidden">
+                <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
                   <div class="stat-value font-mono">
                     <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
                   </div>
+                  <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+                    飛行時間（秒）
+                  </span>
                 </div>
 
-                <div class="stat place-items-center rounded-box bg-base-200 p-4">
-                  <div class="stat-title">
-                    開火時間
-                  </div>
+                <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
                   <div class="stat-value font-mono text-[28px] font-bold">
                     {{ result.fireTime }}
                   </div>
+                  <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+                    開火時間
+                  </span>
                 </div>
               </div>
             </div>
