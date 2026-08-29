@@ -152,7 +152,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
             <h1 class="text-3xl font-bold leading-tight">
               Iron Nest 彈道計算器
             </h1>
-            <p class="text-base text-base-content/60">
+            <p class="text-lg text-base-content/60">
               輸入火炮與目標座標，計算方位角、仰角與飛行時間
             </p>
           </div>
@@ -177,7 +177,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
             </h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
               <div class="form-control">
-                <label class="label"><span class="label-text">區塊</span></label>
+                <label class="label"><span class="label-text text-lg">區塊</span></label>
                 <select v-model="gunCol" class="select select-bordered select-lg w-full">
                   <option v-for="c in COLUMNS" :key="c" :value="c">
                     {{ c }}
@@ -185,7 +185,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
                 </select>
               </div>
               <div class="form-control">
-                <label class="label"><span class="label-text">列</span></label>
+                <label class="label"><span class="label-text text-lg">列</span></label>
                 <select v-model.number="gunRow" class="select select-bordered select-lg w-full">
                   <option v-for="r in ROWS" :key="r" :value="r">
                     {{ r }}
@@ -193,7 +193,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
                 </select>
               </div>
               <div class="form-control">
-                <label class="label"><span class="label-text">子座標 X</span></label>
+                <label class="label"><span class="label-text text-lg">子座標 X</span></label>
                 <select v-model.number="gunSubX" class="select select-bordered select-lg w-full">
                   <option v-for="s in SUBS" :key="s" :value="s">
                     {{ s }}
@@ -201,7 +201,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
                 </select>
               </div>
               <div class="form-control">
-                <label class="label"><span class="label-text">子座標 Y</span></label>
+                <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
                 <select v-model.number="gunSubY" class="select select-bordered select-lg w-full">
                   <option v-for="s in SUBS" :key="s" :value="s">
                     {{ s }}
@@ -225,12 +225,12 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
         </dialog>
 
         <fieldset class="fieldset relative overflow-hidden rounded-box border-2 border-accent/40 bg-accent/5 p-6 pb-14">
-          <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black italic text-accent/15 md:text-5xl">
+          <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black text-accent/15 md:text-5xl">
             目標位置
           </span>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="form-control">
-              <label class="label"><span class="label-text">區塊</span></label>
+              <label class="label"><span class="label-text text-lg">區塊</span></label>
               <select v-model="targetCol" class="select select-bordered select-lg w-full">
                 <option v-for="c in COLUMNS" :key="c" :value="c">
                   {{ c }}
@@ -238,7 +238,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
               </select>
             </div>
             <div class="form-control">
-              <label class="label"><span class="label-text">列</span></label>
+              <label class="label"><span class="label-text text-lg">列</span></label>
               <select v-model.number="targetRow" class="select select-bordered select-lg w-full">
                 <option v-for="r in ROWS" :key="r" :value="r">
                   {{ r }}
@@ -246,7 +246,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
               </select>
             </div>
             <div class="form-control">
-              <label class="label"><span class="label-text">子座標 X</span></label>
+              <label class="label"><span class="label-text text-lg">子座標 X</span></label>
               <select v-model.number="targetSubX" class="select select-bordered select-lg w-full">
                 <option v-for="s in SUBS" :key="s" :value="s">
                   {{ s }}
@@ -254,7 +254,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
               </select>
             </div>
             <div class="form-control">
-              <label class="label"><span class="label-text">子座標 Y</span></label>
+              <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
               <select v-model.number="targetSubY" class="select select-bordered select-lg w-full">
                 <option v-for="s in SUBS" :key="s" :value="s">
                   {{ s }}
@@ -264,12 +264,12 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
           </div>
           <label class="label mt-4 w-fit cursor-pointer gap-2">
             <input v-model="enableFireTime" type="checkbox" class="checkbox checkbox-accent">
-            <span class="label-text">啟用目標落點時間／開火時間</span>
+            <span class="label-text text-lg">啟用目標落點時間／開火時間</span>
           </label>
           <Transition name="collapse">
             <div v-if="enableFireTime" class="collapse-row">
               <div class="form-control min-h-0 overflow-hidden">
-                <label class="label"><span class="label-text">目標落點時間（24 小時制）</span></label>
+                <label class="label"><span class="label-text text-lg">目標落點時間（24 小時制）</span></label>
                 <div class="flex items-center gap-2">
                   <input
                     v-model="hourModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
@@ -297,7 +297,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
         </fieldset>
 
         <fieldset class="fieldset relative overflow-hidden rounded-box border-2 border-primary/40 bg-primary/5 p-6 pb-14">
-          <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black italic text-primary/15 md:text-5xl">
+          <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black text-primary/15 md:text-5xl">
             裝藥包數
           </span>
           <div class="join w-full">
@@ -311,7 +311,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
         </fieldset>
 
         <div class="relative overflow-hidden rounded-box border-2 border-info/40 bg-info/5 p-6 pb-14">
-          <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black italic text-info/15 md:text-5xl">
+          <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black text-info/15 md:text-5xl">
             計算結果
           </span>
 
@@ -320,7 +320,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
               <div class="stat-value font-mono">
                 <Counter :value="round(result.distance, 2)" :places="[10, 1, '.', 0.1, 0.01]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
-              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                 距離（km）
               </span>
             </div>
@@ -329,7 +329,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
               <div class="stat-value font-mono">
                 <Counter :value="round(result.azimuth, 1)" :places="[100, 10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
-              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                 方位角
               </span>
             </div>
@@ -338,7 +338,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
               <div class="stat-value font-mono">
                 <Counter :value="round(result.elevation, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
-              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+              <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                 仰角
               </span>
             </div>
@@ -351,7 +351,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
                   <div class="stat-value font-mono">
                     <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                   </div>
-                  <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+                  <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                     飛行時間（秒）
                   </span>
                 </div>
@@ -364,7 +364,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
                     <span class="text-[28px] font-bold">:</span>
                     <Counter :value="fireTimeParts[2]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                   </div>
-                  <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
+                  <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                     開火時間
                   </span>
                 </div>
