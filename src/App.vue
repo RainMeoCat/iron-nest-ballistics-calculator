@@ -90,7 +90,18 @@ interface Result {
   fireTime: string
 }
 
-const result = ref<Result>({ distance: 0, azimuth: 0, elevation: 0, flightTime: 0, fireTime: '00:00:00' })
+function defaultResult(): Result {
+  return { distance: 0, azimuth: 0, elevation: 0, flightTime: 0, fireTime: '00:00:00' }
+}
+
+const result = ref<Result>(defaultResult())
+
+watch(
+  [gunCol, gunRow, gunSubX, gunSubY, targetCol, targetRow, targetSubX, targetSubY, charges, targetHourStr, targetMinuteStr, targetSecondStr],
+  () => {
+    result.value = defaultResult()
+  },
+)
 
 function toKm(col: string, row: number, subX: number, subY: number) {
   const x = (col.charCodeAt(0) - 65) + subX / 10
