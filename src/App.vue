@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import { Moon, Sun } from 'lucide-vue-next'
 import { computed, onMounted, ref, watch } from 'vue'
 import Counter from './components/Counter.vue'
 
@@ -146,30 +147,26 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
 <template>
   <div class="min-h-screen bg-gradient-to-b from-base-100 to-base-200 flex items-center justify-center p-4 py-10">
     <div class="card w-full max-w-4xl bg-base-100 shadow-2xl border border-base-300">
-      <div class="card-body gap-8 p-6 md:p-10">
+      <div class="card-body gap-6 p-6 md:p-10">
         <header class="flex items-center gap-4">
           <div class="flex-1">
             <h1 class="text-3xl font-bold leading-tight">
               Iron Nest 彈道計算器
             </h1>
-            <p class="text-lg text-base-content/60">
-              輸入火炮與目標座標，計算方位角、仰角與飛行時間
-            </p>
           </div>
-          <button
-            type="button" class="btn btn-secondary btn-outline btn-sm gap-2"
-            @click="gunModal?.showModal()"
-          >
-            <span class="text-xs opacity-70">火炮位置（點擊以變更）</span>
-            <span class="font-mono">{{ gunLabel }}</span>
-          </button>
           <label class="swap swap-rotate btn btn-circle btn-ghost btn-lg" aria-label="切換明亮／深色主題">
             <input type="checkbox" :checked="isLight" @change="toggleTheme">
-            <span class="swap-on text-2xl">☀️</span>
-            <span class="swap-off text-2xl">🌙</span>
+            <Sun class="swap-on h-6 w-6" />
+            <Moon class="swap-off h-6 w-6" />
           </label>
         </header>
-
+        <button
+          type="button" class="btn btn-secondary btn-outline mt-1 gap-2"
+          @click="gunModal?.showModal()"
+        >
+          <span class="text-sm opacity-70">火炮位置（點擊以變更）</span>
+          <span class="font-mono text-lg">{{ gunLabel }}</span>
+        </button>
         <dialog ref="gunModal" class="modal">
           <div class="modal-box">
             <h3 class="text-lg font-bold text-secondary">
