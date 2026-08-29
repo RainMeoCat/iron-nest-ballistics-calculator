@@ -266,30 +266,34 @@ function round(n: number, digits: number) {
             <input v-model="enableFireTime" type="checkbox" class="checkbox checkbox-accent">
             <span class="label-text">啟用目標落點時間／開火時間</span>
           </label>
-          <div v-if="enableFireTime" class="form-control mt-2">
-            <label class="label"><span class="label-text">目標落點時間（24 小時制）</span></label>
-            <div class="flex items-center gap-2">
-              <input
-                v-model="hourModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
-                class="input input-bordered input-lg w-full font-mono text-center"
-                @focus="selectAllOnFocus"
-              >
-              <span class="text-lg font-bold">:</span>
-              <input
-                ref="minuteInput"
-                v-model="minuteModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
-                class="input input-bordered input-lg w-full font-mono text-center"
-                @focus="selectAllOnFocus"
-              >
-              <span class="text-lg font-bold">:</span>
-              <input
-                ref="secondInput"
-                v-model="secondModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
-                class="input input-bordered input-lg w-full font-mono text-center"
-                @focus="selectAllOnFocus"
-              >
+          <Transition name="collapse">
+            <div v-if="enableFireTime" class="collapse-row">
+              <div class="form-control mt-2 min-h-0 overflow-hidden">
+                <label class="label"><span class="label-text">目標落點時間（24 小時制）</span></label>
+                <div class="flex items-center gap-2">
+                  <input
+                    v-model="hourModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
+                    class="input input-bordered input-lg w-full font-mono text-center"
+                    @focus="selectAllOnFocus"
+                  >
+                  <span class="text-lg font-bold">:</span>
+                  <input
+                    ref="minuteInput"
+                    v-model="minuteModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
+                    class="input input-bordered input-lg w-full font-mono text-center"
+                    @focus="selectAllOnFocus"
+                  >
+                  <span class="text-lg font-bold">:</span>
+                  <input
+                    ref="secondInput"
+                    v-model="secondModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
+                    class="input input-bordered input-lg w-full font-mono text-center"
+                    @focus="selectAllOnFocus"
+                  >
+                </div>
+              </div>
             </div>
-          </div>
+          </Transition>
         </fieldset>
 
         <fieldset class="fieldset relative overflow-hidden rounded-box border-2 border-primary/40 bg-primary/5 p-6 pb-14">
@@ -344,27 +348,50 @@ function round(n: number, digits: number) {
             </div>
           </div>
 
-          <div v-if="enableFireTime" class="grid grid-cols-2 gap-4 mt-4">
-            <div class="stat place-items-center rounded-box bg-base-200 p-4">
-              <div class="stat-title">
-                飛行時間（秒）
-              </div>
-              <div class="stat-value font-mono">
-                <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
-              </div>
-            </div>
+          <Transition name="collapse">
+            <div v-if="enableFireTime" class="collapse-row">
+              <div class="grid grid-cols-2 gap-4 mt-4 min-h-0 overflow-hidden">
+                <div class="stat place-items-center rounded-box bg-base-200 p-4">
+                  <div class="stat-title">
+                    飛行時間（秒）
+                  </div>
+                  <div class="stat-value font-mono">
+                    <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
+                  </div>
+                </div>
 
-            <div class="stat place-items-center rounded-box bg-base-200 p-4">
-              <div class="stat-title">
-                開火時間
-              </div>
-              <div class="stat-value font-mono text-[28px] font-bold">
-                {{ result.fireTime }}
+                <div class="stat place-items-center rounded-box bg-base-200 p-4">
+                  <div class="stat-title">
+                    開火時間
+                  </div>
+                  <div class="stat-value font-mono text-[28px] font-bold">
+                    {{ result.fireTime }}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </Transition>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.collapse-row {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.collapse-enter-active,
+.collapse-leave-active {
+  transition: grid-template-rows 1s ease, opacity 1s ease;
+}
+
+.collapse-enter-from,
+.collapse-leave-to {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+</style>
