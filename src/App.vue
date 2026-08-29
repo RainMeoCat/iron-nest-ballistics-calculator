@@ -152,6 +152,8 @@ function calculate() {
 function round(n: number, digits: number) {
   return Number(n.toFixed(digits))
 }
+
+const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number))
 </script>
 
 <template>
@@ -333,7 +335,7 @@ function round(n: number, digits: number) {
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
               <div class="stat-value font-mono">
-                <Counter :value="round(result.distance, 2)" :places="[10, 1, '.', 0.1, 0.01]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
+                <Counter :value="round(result.distance, 2)" :places="[10, 1, '.', 0.1, 0.01]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
                 距離（km）
@@ -342,7 +344,7 @@ function round(n: number, digits: number) {
 
             <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
               <div class="stat-value font-mono">
-                <Counter :value="round(result.azimuth, 1)" :places="[100, 10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
+                <Counter :value="round(result.azimuth, 1)" :places="[100, 10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
                 方位角
@@ -351,7 +353,7 @@ function round(n: number, digits: number) {
 
             <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
               <div class="stat-value font-mono">
-                <Counter :value="round(result.elevation, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
+                <Counter :value="round(result.elevation, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
                 仰角
@@ -364,7 +366,7 @@ function round(n: number, digits: number) {
               <div class="grid grid-cols-2 gap-4 min-h-0 overflow-hidden">
                 <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
                   <div class="stat-value font-mono">
-                    <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" />
+                    <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                   </div>
                   <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
                     飛行時間（秒）
@@ -372,8 +374,12 @@ function round(n: number, digits: number) {
                 </div>
 
                 <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-                  <div class="stat-value font-mono text-[28px] font-bold">
-                    {{ result.fireTime }}
+                  <div class="stat-value flex items-center justify-center gap-1 font-mono">
+                    <Counter :value="fireTimeParts[0]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
+                    <span class="text-[28px] font-bold">:</span>
+                    <Counter :value="fireTimeParts[1]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
+                    <span class="text-[28px] font-bold">:</span>
+                    <Counter :value="fireTimeParts[2]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                   </div>
                   <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-xl font-black italic text-base-content/30">
                     開火時間

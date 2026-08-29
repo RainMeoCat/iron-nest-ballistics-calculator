@@ -67,11 +67,11 @@ const places = computed<PlaceValue[]>(() => props.places ?? derivePlaces(props.v
 const computedCounterStyle = computed<CSSProperties>(() => ({
   fontSize: `${props.fontSize}px`,
   display: 'flex',
-  gap: props.gap,
+  gap: `${props.gap}px`,
   overflow: 'hidden',
-  borderRadius: props.borderRadius,
-  paddingLeft: props.horizontalPadding,
-  paddingRight: props.horizontalPadding,
+  borderRadius: `${props.borderRadius}px`,
+  paddingLeft: `${props.horizontalPadding}px`,
+  paddingRight: `${props.horizontalPadding}px`,
   lineHeight: 1,
   color: props.textColor,
   fontWeight: props.fontWeight,
@@ -89,12 +89,12 @@ const gradientContainerStyle: CSSProperties = {
 }
 
 const computedTopGradientStyle = computed<CSSProperties>(() => ({
-  height: props.gradientHeight,
+  height: `${props.gradientHeight}px`,
   background: `linear-gradient(to bottom, ${props.gradientFrom}, ${props.gradientTo})`,
 }))
 
 const computedBottomGradientStyle = computed<CSSProperties>(() => ({
-  height: props.gradientHeight,
+  height: `${props.gradientHeight}px`,
   background: `linear-gradient(to top, ${props.gradientFrom}, ${props.gradientTo})`,
 }))
 
@@ -137,7 +137,7 @@ const DigitColumn = defineComponent({
 
     return () => {
       const wrapperStyle: CSSProperties = {
-        height: columnProps.height,
+        height: `${columnProps.height}px`,
         position: 'relative',
         width: '1ch',
         fontVariantNumeric: 'tabular-nums',
