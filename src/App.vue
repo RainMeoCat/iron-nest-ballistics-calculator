@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { Moon, Sun } from 'lucide-vue-next'
 import { computed, onMounted, ref, watch } from 'vue'
 import Counter from './components/Counter.vue'
 
@@ -74,15 +73,6 @@ function secondsToTime(totalSeconds: number) {
   return `${pad(h)}:${pad(m)}:${pad(s)}`
 }
 
-const isLight = ref(document.documentElement.getAttribute('data-theme') === 'ironnest-light')
-
-function toggleTheme() {
-  isLight.value = !isLight.value
-  const theme = isLight.value ? 'ironnest-light' : 'ironnest'
-  document.documentElement.setAttribute('data-theme', theme)
-  localStorage.setItem('theme', theme)
-}
-
 interface Result {
   distance: number
   azimuth: number
@@ -148,18 +138,9 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
   <div class="min-h-screen bg-gradient-to-b from-base-100 to-base-200 flex items-center justify-center p-4 py-10">
     <div class="card w-full max-w-4xl bg-base-100 shadow-2xl border border-base-300">
       <div class="card-body gap-6 p-6 md:p-10">
-        <header class="flex items-center gap-4">
-          <div class="flex-1">
-            <h1 class="text-3xl font-bold leading-tight">
-              Iron Nest 彈道計算器
-            </h1>
-          </div>
-          <label class="swap swap-rotate btn btn-circle btn-ghost btn-lg" aria-label="切換明亮／深色主題">
-            <input type="checkbox" :checked="isLight" @change="toggleTheme">
-            <Sun class="swap-on h-6 w-6" />
-            <Moon class="swap-off h-6 w-6" />
-          </label>
-        </header>
+        <h1 class="text-3xl font-bold leading-tight">
+          Iron Nest 彈道計算器
+        </h1>
         <button
           type="button" class="btn btn-secondary btn-outline mt-1 gap-2"
           @click="gunModal?.showModal()"
@@ -297,12 +278,12 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
           <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black text-primary/15 md:text-5xl">
             裝藥包數
           </span>
-          <div class="join w-full">
+          <div class="grid grid-cols-6 gap-2 w-full">
             <input
               v-for="n in CHARGE_OPTIONS" :key="n"
               v-model.number="charges" type="radio" name="charges"
               :aria-label="String(n)" :value="n" :disabled="isChargeDisabled(n)"
-              class="join-item btn btn-lg flex-1"
+              class="btn btn-lg"
             >
           </div>
         </fieldset>
