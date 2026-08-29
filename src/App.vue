@@ -90,19 +90,6 @@ interface Result {
   fireTime: string
 }
 
-function defaultResult(): Result {
-  return { distance: 0, azimuth: 0, elevation: 0, flightTime: 0, fireTime: '00:00:00' }
-}
-
-const result = ref<Result>(defaultResult())
-
-watch(
-  [gunCol, gunRow, gunSubX, gunSubY, targetCol, targetRow, targetSubX, targetSubY, charges, targetHourStr, targetMinuteStr, targetSecondStr],
-  () => {
-    result.value = defaultResult()
-  },
-)
-
 function toKm(col: string, row: number, subX: number, subY: number) {
   const x = (col.charCodeAt(0) - 65) + subX / 10
   const y = (row - 1) + subY / 10
@@ -136,7 +123,7 @@ watch(liveDistance, (distance) => {
   }
 }, { immediate: true })
 
-function calculate() {
+const result = computed<Result>(() => {
   const { dx, dy } = offsetToTarget()
 
   const distance = liveDistance.value
@@ -146,8 +133,8 @@ function calculate() {
   const flightTime = (distance / (charges.value * 5)) * 38
   const fireTime = secondsToTime(timeToSeconds(Number(targetHourStr.value || 0), Number(targetMinuteStr.value || 0), Number(targetSecondStr.value || 0)) - flightTime)
 
-  result.value = { distance, azimuth, elevation, flightTime, fireTime }
-}
+  return { distance, azimuth, elevation, flightTime, fireTime }
+})
 
 function round(n: number, digits: number) {
   return Number(n.toFixed(digits))
@@ -322,10 +309,6 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
             >
           </div>
         </fieldset>
-
-        <button type="button" class="btn btn-primary btn-lg w-full gap-2 text-lg" @click="calculate">
-          <span class="text-xl">🧮</span> 計算彈道
-        </button>
 
         <div class="relative overflow-hidden rounded-box border-2 border-info/40 bg-info/5 p-6 pb-14">
           <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black italic text-info/15 md:text-5xl">
