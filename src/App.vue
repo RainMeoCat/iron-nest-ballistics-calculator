@@ -164,8 +164,8 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
           type="button" class="btn btn-secondary btn-outline mt-1 gap-2"
           @click="gunModal?.showModal()"
         >
-          <span class="text-sm opacity-70">火炮位置（點擊以變更）</span>
-          <span class="font-mono text-lg">{{ gunLabel }}</span>
+          <span class="text-lg opacity-70">火炮位置（點擊以變更）</span>
+          <span class="text-lg">{{ gunLabel }}</span>
         </button>
         <dialog ref="gunModal" class="modal">
           <div class="modal-box">
@@ -270,21 +270,21 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
                 <div class="flex items-center gap-2">
                   <input
                     v-model="hourModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
-                    class="input input-bordered input-lg w-full font-mono text-center"
+                    class="input input-bordered input-lg w-full text-center"
                     @focus="selectAllOnFocus"
                   >
                   <span class="text-lg font-bold">:</span>
                   <input
                     ref="minuteInput"
                     v-model="minuteModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
-                    class="input input-bordered input-lg w-full font-mono text-center"
+                    class="input input-bordered input-lg w-full text-center"
                     @focus="selectAllOnFocus"
                   >
                   <span class="text-lg font-bold">:</span>
                   <input
                     ref="secondInput"
                     v-model="secondModel" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2"
-                    class="input input-bordered input-lg w-full font-mono text-center"
+                    class="input input-bordered input-lg w-full text-center"
                     @focus="selectAllOnFocus"
                   >
                 </div>
@@ -314,7 +314,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
 
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-              <div class="stat-value font-mono">
+              <div class="stat-value">
                 <Counter :value="round(result.distance, 2)" :places="[10, 1, '.', 0.1, 0.01]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
@@ -323,7 +323,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
             </div>
 
             <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-              <div class="stat-value font-mono">
+              <div class="stat-value">
                 <Counter :value="round(result.azimuth, 1)" :places="[100, 10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
@@ -332,7 +332,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
             </div>
 
             <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-              <div class="stat-value font-mono">
+              <div class="stat-value">
                 <Counter :value="round(result.elevation, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               </div>
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
@@ -345,7 +345,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
             <div v-if="enableFireTime" class="collapse-row">
               <div class="grid grid-cols-2 gap-4 min-h-0 overflow-hidden">
                 <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-                  <div class="stat-value font-mono">
+                  <div class="stat-value">
                     <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                   </div>
                   <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
@@ -354,7 +354,7 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
                 </div>
 
                 <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-                  <div class="stat-value flex items-center justify-center gap-1 font-mono">
+                  <div class="stat-value flex items-center justify-center gap-1">
                     <Counter :value="fireTimeParts[0]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                     <span class="text-[28px] font-bold">:</span>
                     <Counter :value="fireTimeParts[1]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
