@@ -1,6 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light, dark, cupcake, bumblebee, emerald, corporate, synthwave, retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi, pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid, lemonade, night, coffee, winter, dim, nord, sunset, abyss, silk, caramellatte;
+}
+
+@plugin "daisyui/theme" {
+  name: "ironnest";
+  default: true;
+  color-scheme: dark;
+  --color-primary: #f59e0b;
+  --color-primary-content: #1a1005;
+  --color-secondary: #3b82f6;
+  --color-secondary-content: #eaf1ff;
+  --color-accent: #ef4444;
+  --color-accent-content: #fff1f0;
+  --color-neutral: #1e2430;
+  --color-neutral-content: #c9d1de;
+  --color-base-100: #12161c;
+  --color-base-200: #191f28;
+  --color-base-300: #232a35;
+  --color-base-content: #e6eaf1;
+  --color-info: #38bdf8;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+}
 
 @layer base {
   :root {

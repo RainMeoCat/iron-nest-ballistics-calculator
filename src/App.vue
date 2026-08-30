@@ -1,13 +1,61 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import { Palette } from 'lucide-vue-next'
 import { computed, onMounted, ref, watch } from 'vue'
 import Counter from './components/Counter.vue'
+import DropdownSelect from './components/DropdownSelect.vue'
 
 const COLUMNS = Array.from({ length: 20 }, (_, i) => String.fromCharCode(65 + i)) // A-T
 const ROWS = Array.from({ length: 10 }, (_, i) => i + 1) // 1-10
 const SUBS = Array.from({ length: 10 }, (_, i) => i) // 0-9
 const CHARGE_OPTIONS = Array.from({ length: 6 }, (_, i) => i + 1) // 1-6
 const MAX_RANGE_PER_CHARGE_KM = 5 // charge n can reach at most n * 5km
+
+const THEMES = [
+  'ironnest',
+  'light',
+  'dark',
+  'cupcake',
+  'bumblebee',
+  'emerald',
+  'corporate',
+  'synthwave',
+  'retro',
+  'cyberpunk',
+  'valentine',
+  'halloween',
+  'garden',
+  'forest',
+  'aqua',
+  'lofi',
+  'pastel',
+  'fantasy',
+  'wireframe',
+  'black',
+  'luxury',
+  'dracula',
+  'cmyk',
+  'autumn',
+  'business',
+  'acid',
+  'lemonade',
+  'night',
+  'coffee',
+  'winter',
+  'dim',
+  'nord',
+  'sunset',
+  'abyss',
+  'silk',
+  'caramellatte',
+]
+const currentTheme = ref('ironnest')
+
+function setTheme(theme: string) {
+  currentTheme.value = theme
+  document.documentElement.setAttribute('data-theme', theme)
+  localStorage.setItem('theme', theme)
+}
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
@@ -22,6 +70,12 @@ const gunModal = ref<HTMLDialogElement | null>(null)
 
 onMounted(() => {
   gunModal.value?.showModal()
+
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme && THEMES.includes(savedTheme)) {
+    currentTheme.value = savedTheme
+    document.documentElement.setAttribute('data-theme', savedTheme)
+  }
 })
 
 const targetCol = ref('A')
@@ -138,9 +192,34 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
   <div class="min-h-screen bg-gradient-to-b from-base-100 to-base-200 flex items-center justify-center p-4 py-10">
     <div class="card w-full max-w-4xl bg-base-100 shadow-2xl border border-base-300">
       <div class="card-body gap-6 p-6 md:p-10">
-        <h1 class="text-3xl font-bold leading-tight">
-          Iron Nest 彈道計算器
-        </h1>
+        <header class="flex items-center gap-4">
+          <h1 class="flex-1 text-3xl font-bold leading-tight">
+            Iron Nest 彈道計算器
+          </h1>
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-circle btn-ghost btn-lg" aria-label="選擇主題">
+              <Palette class="h-6 w-6" />
+            </div>
+            <ul tabindex="0" class="dropdown-content menu z-10 mt-2 max-h-96 w-56 flex-nowrap overflow-y-auto rounded-box bg-base-200 p-2 shadow-2xl">
+              <li v-for="theme in THEMES" :key="theme">
+                <button
+                  type="button"
+                  class="flex w-full items-center justify-between gap-3"
+                  :class="{ active: theme === currentTheme }"
+                  @click="setTheme(theme)"
+                >
+                  <span class="text-sm">{{ theme }}</span>
+                  <span :data-theme="theme" class="flex shrink-0 gap-1 rounded-field bg-base-100 p-1">
+                    <span class="h-3 w-3 rounded-full bg-primary" />
+                    <span class="h-3 w-3 rounded-full bg-secondary" />
+                    <span class="h-3 w-3 rounded-full bg-accent" />
+                    <span class="h-3 w-3 rounded-full bg-neutral" />
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </header>
         <button
           type="button" class="btn btn-secondary btn-outline mt-1 gap-2"
           @click="gunModal?.showModal()"
@@ -149,42 +228,26 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
           <span class="text-lg">{{ gunLabel }}</span>
         </button>
         <dialog ref="gunModal" class="modal">
-          <div class="modal-box">
+          <div class="modal-box !overflow-visible">
             <h3 class="text-lg font-bold text-secondary">
               設定火炮位置
             </h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
               <div class="form-control">
                 <label class="label"><span class="label-text text-lg">區塊</span></label>
-                <select v-model="gunCol" class="select select-bordered select-lg w-full">
-                  <option v-for="c in COLUMNS" :key="c" :value="c">
-                    {{ c }}
-                  </option>
-                </select>
+                <DropdownSelect v-model="gunCol" :options="COLUMNS" />
               </div>
               <div class="form-control">
                 <label class="label"><span class="label-text text-lg">列</span></label>
-                <select v-model.number="gunRow" class="select select-bordered select-lg w-full">
-                  <option v-for="r in ROWS" :key="r" :value="r">
-                    {{ r }}
-                  </option>
-                </select>
+                <DropdownSelect v-model="gunRow" :options="ROWS" />
               </div>
               <div class="form-control">
                 <label class="label"><span class="label-text text-lg">子座標 X</span></label>
-                <select v-model.number="gunSubX" class="select select-bordered select-lg w-full">
-                  <option v-for="s in SUBS" :key="s" :value="s">
-                    {{ s }}
-                  </option>
-                </select>
+                <DropdownSelect v-model="gunSubX" :options="SUBS" />
               </div>
               <div class="form-control">
                 <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
-                <select v-model.number="gunSubY" class="select select-bordered select-lg w-full">
-                  <option v-for="s in SUBS" :key="s" :value="s">
-                    {{ s }}
-                  </option>
-                </select>
+                <DropdownSelect v-model="gunSubY" :options="SUBS" />
               </div>
             </div>
             <div class="modal-action">
@@ -202,42 +265,28 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
           </form>
         </dialog>
 
-        <fieldset class="fieldset relative overflow-hidden rounded-box border-2 border-accent/40 bg-accent/5 p-6 pb-14">
-          <span class="pointer-events-none absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black text-accent/15 md:text-5xl">
-            目標位置
-          </span>
+        <fieldset class="fieldset relative rounded-box border-2 border-accent/40 bg-accent/5 p-6 pb-14">
+          <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-box">
+            <span class="absolute bottom-1 left-4 select-none whitespace-nowrap text-4xl font-black text-accent/15 md:text-5xl">
+              目標位置
+            </span>
+          </div>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="form-control">
               <label class="label"><span class="label-text text-lg">區塊</span></label>
-              <select v-model="targetCol" class="select select-bordered select-lg w-full">
-                <option v-for="c in COLUMNS" :key="c" :value="c">
-                  {{ c }}
-                </option>
-              </select>
+              <DropdownSelect v-model="targetCol" :options="COLUMNS" />
             </div>
             <div class="form-control">
               <label class="label"><span class="label-text text-lg">列</span></label>
-              <select v-model.number="targetRow" class="select select-bordered select-lg w-full">
-                <option v-for="r in ROWS" :key="r" :value="r">
-                  {{ r }}
-                </option>
-              </select>
+              <DropdownSelect v-model="targetRow" :options="ROWS" />
             </div>
             <div class="form-control">
               <label class="label"><span class="label-text text-lg">子座標 X</span></label>
-              <select v-model.number="targetSubX" class="select select-bordered select-lg w-full">
-                <option v-for="s in SUBS" :key="s" :value="s">
-                  {{ s }}
-                </option>
-              </select>
+              <DropdownSelect v-model="targetSubX" :options="SUBS" />
             </div>
             <div class="form-control">
               <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
-              <select v-model.number="targetSubY" class="select select-bordered select-lg w-full">
-                <option v-for="s in SUBS" :key="s" :value="s">
-                  {{ s }}
-                </option>
-              </select>
+              <DropdownSelect v-model="targetSubY" :options="SUBS" />
             </div>
           </div>
           <label class="label mt-4 w-fit cursor-pointer gap-2">
@@ -294,28 +343,22 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
           </span>
 
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-            <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-              <div class="stat-value">
-                <Counter :value="round(result.distance, 2)" :places="[10, 1, '.', 0.1, 0.01]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
-              </div>
+            <div class="relative overflow-hidden flex items-center justify-center rounded-box bg-base-200 p-8">
+              <Counter :value="round(result.distance, 2)" :places="[10, 1, '.', 0.1, 0.01]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                 距離（km）
               </span>
             </div>
 
-            <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-              <div class="stat-value">
-                <Counter :value="round(result.azimuth, 1)" :places="[100, 10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
-              </div>
+            <div class="relative overflow-hidden flex items-center justify-center rounded-box bg-base-200 p-8">
+              <Counter :value="round(result.azimuth, 1)" :places="[100, 10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                 方位角
               </span>
             </div>
 
-            <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-              <div class="stat-value">
-                <Counter :value="round(result.elevation, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
-              </div>
+            <div class="relative overflow-hidden flex items-center justify-center rounded-box bg-base-200 p-8">
+              <Counter :value="round(result.elevation, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
               <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                 仰角
               </span>
@@ -325,17 +368,15 @@ const fireTimeParts = computed(() => result.value.fireTime.split(':').map(Number
           <Transition name="collapse">
             <div v-if="enableFireTime" class="collapse-row">
               <div class="grid grid-cols-2 gap-4 min-h-0 overflow-hidden">
-                <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-                  <div class="stat-value">
-                    <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
-                  </div>
+                <div class="relative overflow-hidden flex items-center justify-center rounded-box bg-base-200 p-8">
+                  <Counter :value="round(result.flightTime, 1)" :places="[10, 1, '.', 0.1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                   <span class="pointer-events-none absolute bottom-0  left-2 select-none whitespace-nowrap text-2xl font-black text-base-content/30">
                     飛行時間（秒）
                   </span>
                 </div>
 
-                <div class="stat relative overflow-hidden place-items-center rounded-box bg-base-200 p-8">
-                  <div class="stat-value flex items-center justify-center gap-1">
+                <div class="relative overflow-hidden flex items-center justify-center rounded-box bg-base-200 p-8">
+                  <div class="flex items-center justify-center gap-1">
                     <Counter :value="fireTimeParts[0]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
                     <span class="text-[28px] font-bold">:</span>
                     <Counter :value="fireTimeParts[1]" :places="[10, 1]" :font-size="28" :font-weight="700" :gap="1" :horizontal-padding="0" :border-radius="0" :gradient-height="0" />
