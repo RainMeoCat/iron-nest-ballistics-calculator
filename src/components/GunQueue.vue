@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FireRecord } from '../types'
 import { Check, Trash2 } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import CollapseTransition from './CollapseTransition.vue'
 import Counter from './Counter.vue'
 
@@ -14,6 +15,8 @@ const emit = defineEmits<{
   toggleFired: [id: number]
   remove: [id: number]
 }>()
+
+const { t } = useI18n()
 
 function pinPosition(el: Element) {
   const target = el as HTMLElement
@@ -69,7 +72,7 @@ function pinPosition(el: Element) {
                   type="button"
                   class="btn btn-circle btn-ghost btn-sm"
                   :class="{ 'text-success': record.fired }"
-                  :aria-label="record.fired ? '取消已開火' : '標記已開火'"
+                  :aria-label="record.fired ? t('queue.unmarkFired') : t('queue.markFired')"
                   @click="emit('toggleFired', record.id)"
                 >
                   <Check class="h-5 w-5" />
@@ -77,7 +80,7 @@ function pinPosition(el: Element) {
                 <button
                   type="button"
                   class="btn btn-circle btn-ghost text-error btn-sm"
-                  aria-label="刪除紀錄"
+                  :aria-label="t('queue.deleteRecord')"
                   @click="emit('remove', record.id)"
                 >
                   <Trash2 class="h-5 w-5" />
@@ -85,16 +88,16 @@ function pinPosition(el: Element) {
               </div>
             </div>
             <div class="mt-2 flex flex-wrap gap-x-3 text-lg opacity-70">
-              <span>裝藥 {{ record.charges }}</span>
-              <span>方位 {{ record.azimuth }}°</span>
-              <span>仰角 {{ record.elevation }}</span>
+              <span>{{ t('queue.chargeValue', { n: record.charges }) }}</span>
+              <span>{{ t('queue.azimuthValue', { n: record.azimuth }) }}</span>
+              <span>{{ t('queue.elevationValue', { n: record.elevation }) }}</span>
             </div>
             <CollapseTransition :show="showFireTime && !!(record.impactTime || record.fireTime)">
               <div
                 class="grid min-h-0 grid-cols-2 gap-x-3 overflow-hidden text-lg opacity-70"
               >
-                <span v-if="record.fireTime">開火 {{ record.fireTime }}</span>
-                <span v-if="record.impactTime">落地 {{ record.impactTime }}</span>
+                <span v-if="record.fireTime">{{ t('queue.fireTimeValue', { n: record.fireTime }) }}</span>
+                <span v-if="record.impactTime">{{ t('queue.impactTimeValue', { n: record.impactTime }) }}</span>
               </div>
             </CollapseTransition>
           </div>

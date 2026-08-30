@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import type { FireRecord } from './types'
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import CollapseTransition from './components/CollapseTransition.vue'
 import CoordinatePicker from './components/CoordinatePicker.vue'
 import GunQueue from './components/GunQueue.vue'
 import LabeledPanel from './components/LabeledPanel.vue'
+import LanguageSwitcher from './components/LanguageSwitcher.vue'
 import Modal from './components/Modal.vue'
 import ResultCounter from './components/ResultCounter.vue'
 import StatTile from './components/StatTile.vue'
 import TimeInputGroup from './components/TimeInputGroup.vue'
 import { CHARGE_OPTIONS, MAX_RANGE_PER_CHARGE_KM } from './constants'
+
+const { t } = useI18n()
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
@@ -180,11 +184,12 @@ function removeFromQueue(queue: FireRecord[], id: number) {
       <div class="card-body gap-6 p-6 md:p-10">
         <header class="flex items-center gap-4">
           <h1 class="flex-1 text-3xl leading-tight font-bold">
-            Iron Nest 彈道計算器
+            {{ t('app.title') }}
           </h1>
+          <LanguageSwitcher />
           <button
             type="button"
-            aria-label="設定"
+            :aria-label="t('settings.ariaLabel')"
             class="btn btn-circle btn-lg btn-ghost"
             @click="settingsModalOpen = true"
           >
@@ -205,7 +210,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </header>
         <Modal v-model:open="settingsModalOpen">
           <h3 class="text-lg font-bold text-secondary">
-            設定
+            {{ t('settings.title') }}
           </h3>
           <div class="mt-4">
             <label class="label w-fit cursor-pointer gap-2">
@@ -214,13 +219,13 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                 type="checkbox"
                 class="checkbox checkbox-accent"
               >
-              <span class="label-text text-lg">啟用目標落點時間／開火時間</span>
+              <span class="label-text text-lg">{{ t('settings.enableFireTime') }}</span>
             </label>
           </div>
           <template #actions>
             <form method="dialog">
               <button type="submit" class="btn btn-secondary text-lg">
-                完成
+                {{ t('settings.done') }}
               </button>
             </form>
           </template>
@@ -230,12 +235,12 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           class="btn mt-1 gap-2 btn-lg text-xl btn-primary"
           @click="gunModalOpen = true"
         >
-          <span class="text-lg">火炮位置（點擊以變更）</span>
+          <span class="text-lg">{{ t('gun.positionButton') }}</span>
           <span class="text-lg">{{ gunLabel }}</span>
         </button>
         <Modal v-model:open="gunModalOpen">
           <h3 class="text-lg font-bold text-secondary">
-            設定火炮位置
+            {{ t('gun.positionTitle') }}
           </h3>
           <div class="mt-4">
             <CoordinatePicker
@@ -248,13 +253,13 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           <template #actions>
             <form method="dialog">
               <button type="submit" class="btn btn-secondary text-lg">
-                完成
+                {{ t('gun.done') }}
               </button>
             </form>
           </template>
         </Modal>
 
-        <LabeledPanel label="目標位置" tag="fieldset" overflow-visible>
+        <LabeledPanel :label="t('target.panelLabel')" tag="fieldset" overflow-visible>
           <CoordinatePicker
             v-model:col="targetCol"
             v-model:row="targetRow"
@@ -264,7 +269,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           />
           <CollapseTransition :show="enableFireTime">
             <div class="form-control min-h-0 overflow-hidden">
-              <label class="label"><span class="label-text text-lg">目標落點時間（24 小時制）</span></label>
+              <label class="label"><span class="label-text text-lg">{{ t('target.impactTimeLabel') }}</span></label>
               <TimeInputGroup
                 v-model:hour="targetHourStr"
                 v-model:minute="targetMinuteStr"
@@ -274,7 +279,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </CollapseTransition>
         </LabeledPanel>
 
-        <LabeledPanel label="裝藥包數" tag="fieldset">
+        <LabeledPanel :label="t('charges.panelLabel')" tag="fieldset">
           <div class="grid w-full grid-cols-6 gap-2">
             <input
               v-for="n in CHARGE_OPTIONS"
@@ -290,23 +295,23 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </div>
         </LabeledPanel>
 
-        <LabeledPanel label="計算結果">
+        <LabeledPanel :label="t('result.panelLabel')">
           <div class="mb-4 grid grid-cols-2 gap-4 md:grid-cols-3">
-            <StatTile label="距離（km）">
+            <StatTile :label="t('result.distance')">
               <ResultCounter
                 :value="round(result.distance, 2)"
                 :places="[10, 1, '.', 0.1, 0.01]"
               />
             </StatTile>
 
-            <StatTile label="方位角">
+            <StatTile :label="t('result.azimuth')">
               <ResultCounter
                 :value="round(result.azimuth, 1)"
                 :places="[100, 10, 1, '.', 0.1]"
               />
             </StatTile>
 
-            <StatTile label="仰角">
+            <StatTile :label="t('result.elevation')">
               <ResultCounter
                 :value="round(result.elevation, 1)"
                 :places="[10, 1, '.', 0.1]"
@@ -316,14 +321,14 @@ function removeFromQueue(queue: FireRecord[], id: number) {
 
           <CollapseTransition :show="enableFireTime">
             <div class="grid min-h-0 grid-cols-2 gap-4 overflow-hidden">
-              <StatTile label="飛行時間（秒）">
+              <StatTile :label="t('result.flightTime')">
                 <ResultCounter
                   :value="round(result.flightTime, 1)"
                   :places="[10, 1, '.', 0.1]"
                 />
               </StatTile>
 
-              <StatTile label="開火時間">
+              <StatTile :label="t('result.fireTime')">
                 <div class="flex items-center justify-center gap-1">
                   <ResultCounter :value="fireTimeParts[0]" :places="[10, 1]" />
                   <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
@@ -343,7 +348,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             :disabled="gun1Queue.length >= 5 || result.distance === 0"
             @click="addToQueue(gun1Queue)"
           >
-            載入火炮1（{{ gun1Queue.length }}/5）
+            {{ t('queue.load', { n: 1, count: gun1Queue.length }) }}
           </button>
           <button
             type="button"
@@ -351,7 +356,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             :disabled="gun2Queue.length >= 5 || result.distance === 0"
             @click="addToQueue(gun2Queue)"
           >
-            載入火炮2（{{ gun2Queue.length }}/5）
+            {{ t('queue.load', { n: 2, count: gun2Queue.length }) }}
           </button>
         </div>
       </div>
@@ -364,18 +369,18 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         <span
           class="engraved-label pointer-events-none absolute bottom-4 left-10 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
         >
-          火炮佇列
+          {{ t('queue.title') }}
         </span>
         <div class="grid h-full grid-cols-2 gap-4 pb-16 p-6">
           <GunQueue
-            title="火炮1"
+            :title="t('queue.gunLabel', { n: 1 })"
             :records="gun1Queue"
             :show-fire-time="enableFireTime"
             @toggle-fired="(id) => toggleFired(gun1Queue, id)"
             @remove="(id) => removeFromQueue(gun1Queue, id)"
           />
           <GunQueue
-            title="火炮2"
+            :title="t('queue.gunLabel', { n: 2 })"
             :records="gun2Queue"
             :show-fire-time="enableFireTime"
             @toggle-fired="(id) => toggleFired(gun2Queue, id)"
