@@ -2,6 +2,7 @@
 import type { FireRecord } from '../types'
 import { Check, Trash2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
+import { useIsMobile } from '../composables/useIsMobile'
 import CollapseTransition from './CollapseTransition.vue'
 import Counter from './Counter.vue'
 
@@ -17,6 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+const isMobile = useIsMobile()
 
 function pinPosition(el: Element) {
   const target = el as HTMLElement
@@ -105,16 +107,16 @@ function pinPosition(el: Element) {
       </TransitionGroup>
     </div>
     <span
-      class="pointer-events-none absolute bottom-0 left-1 text-5xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
+      class="pointer-events-none absolute bottom-0 left-1 text-xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none md:text-5xl"
     >
       {{ title }}
     </span>
     <span
-      class="pointer-events-none absolute right-1 bottom-0 flex items-end whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
+      class="pointer-events-none absolute right-1 bottom-0 flex items-center whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
     >
       <Counter
         :value="records.length"
-        :font-size="48"
+        :font-size="isMobile ? 20 : 48"
         :font-weight="900"
         :gap="0"
         :horizontal-padding="0"
@@ -122,7 +124,7 @@ function pinPosition(el: Element) {
         :gradient-height="0"
         :digit-style="{ width: '1.3ch' }"
       />
-      <span class="text-5xl font-black">/5</span>
+      <span class="text-xl font-black md:text-5xl">/5</span>
     </span>
   </div>
 </template>

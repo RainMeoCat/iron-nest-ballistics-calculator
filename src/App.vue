@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FireRecord } from './types'
+import { ListOrdered } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CollapseTransition from './components/CollapseTransition.vue'
@@ -29,6 +30,8 @@ const gunLabel = computed(
 )
 const gunModalOpen = ref(true)
 const settingsModalOpen = ref(false)
+const queueModalOpen = ref(false)
+const activeQueueGun = ref<1 | 2>(1)
 
 const targetCol = ref('A')
 const targetRow = ref(1)
@@ -341,9 +344,9 @@ function removeFromQueue(queue: FireRecord[], id: number) {
               <StatTile :label="t('result.fireTime')">
                 <div class="flex items-center justify-center gap-1">
                   <ResultCounter :value="fireTimeParts[0]" :places="[10, 1]" />
-                  <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
+                  <span class="text-[#5a5d5f] text-[20px] font-bold md:text-[28px]">:</span>
                   <ResultCounter :value="fireTimeParts[1]" :places="[10, 1]" />
-                  <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
+                  <span class="text-[#5a5d5f] text-[20px] font-bold md:text-[28px]">:</span>
                   <ResultCounter :value="fireTimeParts[2]" :places="[10, 1]" />
                 </div>
               </StatTile>
@@ -373,7 +376,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     </div>
 
     <div
-      class="plate card w-full max-w-4xl border-1 border-gray-500 lg:w-[48rem]"
+      class="plate card hidden w-full max-w-4xl border-1 border-gray-500 md:block lg:w-[48rem]"
     >
       <div class="card-body relative gap-4 p-4">
         <span
@@ -381,7 +384,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         >
           {{ t('queue.title') }}
         </span>
-        <div class="grid h-full grid-cols-2 gap-4 pb-16 p-6">
+        <div class="grid h-full grid-cols-2 gap-2 md:gap-4 md:pb-16 p-6">
           <GunQueue
             :title="t('queue.gunLabel', { n: 1 })"
             :records="gun1Queue"
@@ -399,5 +402,55 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </div>
       </div>
     </div>
+
+    <button
+      type="button"
+      :aria-label="t('queue.title')"
+      class="btn btn-circle btn-lg btn-primary fixed right-4 bottom-4 z-10 h-16! w-16! shadow-lg md:hidden"
+      @click="queueModalOpen = true"
+    >
+      <ListOrdered class="h-8 w-8" />
+    </button>
+    <Modal v-model:open="queueModalOpen">
+      <h3 class="text-xl font-bold text-secondary md:text-lg">
+        {{ t('queue.title') }}
+      </h3>
+      <div class="mt-4 grid grid-cols-2 gap-2">
+        <input
+          v-model.number="activeQueueGun"
+          type="radio"
+          name="activeQueueGun"
+          :aria-label="t('queue.gunLabel', { n: 1 })"
+          :value="1"
+          class="btn btn-lg"
+        >
+        <input
+          v-model.number="activeQueueGun"
+          type="radio"
+          name="activeQueueGun"
+          :aria-label="t('queue.gunLabel', { n: 2 })"
+          :value="2"
+          class="btn btn-lg"
+        >
+      </div>
+      <div class="mt-4">
+        <GunQueue
+          v-if="activeQueueGun === 1"
+          :title="t('queue.gunLabel', { n: 1 })"
+          :records="gun1Queue"
+          :show-fire-time="enableFireTime"
+          @toggle-fired="(id) => toggleFired(gun1Queue, id)"
+          @remove="(id) => removeFromQueue(gun1Queue, id)"
+        />
+        <GunQueue
+          v-else
+          :title="t('queue.gunLabel', { n: 2 })"
+          :records="gun2Queue"
+          :show-fire-time="enableFireTime"
+          @toggle-fired="(id) => toggleFired(gun2Queue, id)"
+          @remove="(id) => removeFromQueue(gun2Queue, id)"
+        />
+      </div>
+    </Modal>
   </div>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useIsMobile } from '../composables/useIsMobile'
 import Counter from './Counter.vue'
 
 type PlaceValue = number | '.'
@@ -7,13 +8,15 @@ defineProps<{
   value: number
   places?: PlaceValue[]
 }>()
+
+const isMobile = useIsMobile()
 </script>
 
 <template>
   <Counter
     :value="value"
     :places="places"
-    :font-size="28"
+    :font-size="isMobile ? 20 : 28"
     :font-weight="700"
     :gap="1"
     :horizontal-padding="0"
