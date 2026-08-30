@@ -1,6 +1,6 @@
-[English](README.md) · [繁體中文](README.zh-TW.md) · [简体中文](README.zh-CN.md) · Français · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Українська](README.uk.md) · [日本語](README.ja.md) · [Русский](README.ru.md) · [한국어](README.ko.md) · [Čeština](README.cs.md) · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español (Latinoamérica)](README.es-419.md) · [Türkçe](README.tr.md)
-
 # Iron Nest Ballistics Calculator
+
+[English](../README.md) · [繁體中文](README.zh-TW.md) · [简体中文](README.zh-CN.md) · Français · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Українська](README.uk.md) · [日本語](README.ja.md) · [Русский](README.ru.md) · [한국어](README.ko.md) · [Čeština](README.cs.md) · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español (Latinoamérica)](README.es-419.md) · [Türkçe](README.tr.md)
 
 Une calculatrice balistique construite avec Vue 3 + TypeScript + Vite. Elle calcule la distance, l'azimut, l'élévation, le temps de vol et l'heure de tir à partir des coordonnées du canon et de la cible, et gère une file d'attente de tir pour deux canons. L'interface prend en charge 16 langues.
 
