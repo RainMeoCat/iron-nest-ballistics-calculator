@@ -2,10 +2,13 @@
 import { ChevronDown } from 'lucide-vue-next'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
-defineProps<{
+const props = withDefaults(defineProps<{
   modelValue: string | number
   options: readonly (string | number)[]
-}>()
+  optionDisabled?: (option: string | number) => boolean
+}>(), {
+  optionDisabled: () => false,
+})
 
 const emit = defineEmits<{
   'update:modelValue': [value: string | number]
@@ -23,6 +26,8 @@ function close() {
 }
 
 function choose(option: string | number) {
+  if (props.optionDisabled(option))
+    return
   emit('update:modelValue', option)
   close()
 }
@@ -68,6 +73,7 @@ onBeforeUnmount(() => {
             type="button"
             class="justify-center"
             :class="{ active: option === modelValue }"
+            :disabled="optionDisabled(option)"
             @click="choose(option)"
           >
             {{ option }}

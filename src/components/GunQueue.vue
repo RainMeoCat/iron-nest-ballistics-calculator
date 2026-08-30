@@ -39,7 +39,7 @@ function pinPosition(el: Element) {
         <div
           v-for="record in records"
           :key="record.id"
-          class="plate relative overflow-hidden border border-gray-500 bg-base-200 p-4 text-lg"
+          class="plate relative overflow-hidden border border-gray-500 bg-base-200 p-4 text-base md:text-lg"
         >
           <Transition name="draw">
             <svg
@@ -87,14 +87,14 @@ function pinPosition(el: Element) {
                 </button>
               </div>
             </div>
-            <div class="mt-2 flex flex-wrap gap-x-3 text-lg opacity-70">
+            <div class="mt-2 flex flex-wrap gap-x-3 text-base md:text-lg opacity-70">
               <span>{{ t('queue.chargeValue', { n: record.charges }) }}</span>
               <span>{{ t('queue.azimuthValue', { n: record.azimuth }) }}</span>
               <span>{{ t('queue.elevationValue', { n: record.elevation }) }}</span>
             </div>
             <CollapseTransition :show="showFireTime && !!(record.impactTime || record.fireTime)">
               <div
-                class="grid min-h-0 grid-cols-2 gap-x-3 overflow-hidden text-lg opacity-70"
+                class="grid min-h-0 grid-cols-2 gap-x-3 overflow-hidden text-base md:text-lg opacity-70"
               >
                 <span v-if="record.fireTime">{{ t('queue.fireTimeValue', { n: record.fireTime }) }}</span>
                 <span v-if="record.impactTime">{{ t('queue.impactTimeValue', { n: record.impactTime }) }}</span>

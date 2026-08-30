@@ -362,9 +362,16 @@
   }
 
   .btn-circle.btn-lg {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .btn-circle.btn-lg {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
   }
 
   .btn-circle.btn-sm {
@@ -376,7 +383,13 @@
   .btn-lg {
     height: 3.5rem;
     padding-inline: 1.5rem;
-    font-size: 1.125rem;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .btn-lg {
+      font-size: 1.125rem;
+    }
   }
 
   .btn-sm {
@@ -449,6 +462,15 @@
   .menu li > button.active {
     color: var(--color-primary);
     font-weight: 600;
+  }
+
+  .menu li > button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .menu li > button:disabled:hover {
+    background-color: transparent;
   }
 
   dialog.modal {
@@ -603,7 +625,13 @@
 
   .input-lg {
     height: 3.5rem;
-    font-size: 1.125rem;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .input-lg {
+      font-size: 1.125rem;
+    }
   }
 
   .collapse-row {

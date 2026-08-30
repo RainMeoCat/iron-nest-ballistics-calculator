@@ -47,7 +47,7 @@ function selectAllOnFocus(e: Event) {
       class="input-bordered input w-full text-center input-lg"
       @focus="selectAllOnFocus"
     >
-    <span class="text-lg font-bold">:</span>
+    <span class="text-base md:text-lg font-bold">:</span>
     <input
       ref="minuteInput"
       v-model="minuteModel"
@@ -58,7 +58,7 @@ function selectAllOnFocus(e: Event) {
       class="input-bordered input w-full text-center input-lg"
       @focus="selectAllOnFocus"
     >
-    <span class="text-lg font-bold">:</span>
+    <span class="text-base md:text-lg font-bold">:</span>
     <input
       ref="secondInput"
       v-model="secondModel"

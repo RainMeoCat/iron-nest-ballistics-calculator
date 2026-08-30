@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div
-    class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
+    class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-4 pb-8"
   >
     <slot />
     <span

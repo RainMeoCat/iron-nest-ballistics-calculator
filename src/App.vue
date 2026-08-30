@@ -4,6 +4,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CollapseTransition from './components/CollapseTransition.vue'
 import CoordinatePicker from './components/CoordinatePicker.vue'
+import DropdownSelect from './components/DropdownSelect.vue'
 import GunQueue from './components/GunQueue.vue'
 import LabeledPanel from './components/LabeledPanel.vue'
 import LanguageSwitcher from './components/LanguageSwitcher.vue'
@@ -182,34 +183,36 @@ function removeFromQueue(queue: FireRecord[], id: number) {
       class="plate card w-full max-w-4xl border-1 border-gray-500"
     >
       <div class="card-body gap-6 p-6 md:p-10">
-        <header class="flex items-center gap-4">
-          <h1 class="flex-1 text-3xl leading-tight font-bold">
+        <header class="flex flex-col gap-4 md:flex-row md:items-center">
+          <h1 class="text-2xl leading-tight font-bold md:flex-1 md:text-3xl">
             {{ t('app.title') }}
           </h1>
-          <LanguageSwitcher />
-          <button
-            type="button"
-            :aria-label="t('settings.ariaLabel')"
-            class="btn btn-circle btn-lg btn-ghost"
-            @click="settingsModalOpen = true"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+          <div class="flex items-center gap-4">
+            <LanguageSwitcher />
+            <button
+              type="button"
+              :aria-label="t('settings.ariaLabel')"
+              class="btn btn-circle btn-lg btn-ghost"
+              @click="settingsModalOpen = true"
             >
-              <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065Z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
         </header>
         <Modal v-model:open="settingsModalOpen">
-          <h3 class="text-lg font-bold text-secondary">
+          <h3 class="text-base md:text-lg font-bold text-secondary">
             {{ t('settings.title') }}
           </h3>
           <div class="mt-4">
@@ -219,12 +222,12 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                 type="checkbox"
                 class="checkbox checkbox-accent"
               >
-              <span class="label-text text-lg">{{ t('settings.enableFireTime') }}</span>
+              <span class="label-text text-base md:text-lg">{{ t('settings.enableFireTime') }}</span>
             </label>
           </div>
           <template #actions>
             <form method="dialog">
-              <button type="submit" class="btn btn-secondary text-lg">
+              <button type="submit" class="btn btn-secondary text-base md:text-lg">
                 {{ t('settings.done') }}
               </button>
             </form>
@@ -232,14 +235,14 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </Modal>
         <button
           type="button"
-          class="btn mt-1 gap-2 btn-lg text-xl btn-primary"
+          class="btn mt-1 px-0 gap-2 btn-lg text-xl btn-primary"
           @click="gunModalOpen = true"
         >
-          <span class="text-lg">{{ t('gun.positionButton') }}</span>
-          <span class="text-lg">{{ gunLabel }}</span>
+          <span class="text-base md:text-lg">{{ t('gun.positionButton') }}</span>
+          <span class="text-base md:text-lg">{{ gunLabel }}</span>
         </button>
         <Modal v-model:open="gunModalOpen">
-          <h3 class="text-lg font-bold text-secondary">
+          <h3 class="text-base md:text-lg font-bold text-secondary">
             {{ t('gun.positionTitle') }}
           </h3>
           <div class="mt-4">
@@ -252,7 +255,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </div>
           <template #actions>
             <form method="dialog">
-              <button type="submit" class="btn btn-secondary text-lg">
+              <button type="submit" class="btn btn-secondary text-base md:text-lg">
                 {{ t('gun.done') }}
               </button>
             </form>
@@ -269,7 +272,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           />
           <CollapseTransition :show="enableFireTime">
             <div class="form-control min-h-0 overflow-hidden">
-              <label class="label"><span class="label-text text-lg">{{ t('target.impactTimeLabel') }}</span></label>
+              <label class="label"><span class="label-text text-base md:text-lg">{{ t('target.impactTimeLabel') }}</span></label>
               <TimeInputGroup
                 v-model:hour="targetHourStr"
                 v-model:minute="targetMinuteStr"
@@ -279,8 +282,15 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </CollapseTransition>
         </LabeledPanel>
 
-        <LabeledPanel :label="t('charges.panelLabel')" tag="fieldset">
-          <div class="grid w-full grid-cols-6 gap-2">
+        <LabeledPanel :label="t('charges.panelLabel')" tag="fieldset" overflow-visible>
+          <div class="md:hidden">
+            <DropdownSelect
+              v-model="charges"
+              :options="CHARGE_OPTIONS"
+              :option-disabled="(n) => isChargeDisabled(Number(n))"
+            />
+          </div>
+          <div class="hidden w-full grid-cols-6 gap-2 md:grid">
             <input
               v-for="n in CHARGE_OPTIONS"
               :key="n"
@@ -296,7 +306,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </LabeledPanel>
 
         <LabeledPanel :label="t('result.panelLabel')">
-          <div class="mb-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+          <div class="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
             <StatTile :label="t('result.distance')">
               <ResultCounter
                 :value="round(result.distance, 2)"
@@ -320,7 +330,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </div>
 
           <CollapseTransition :show="enableFireTime">
-            <div class="grid min-h-0 grid-cols-2 gap-4 overflow-hidden">
+            <div class="grid min-h-0 grid-cols-1 gap-4 overflow-hidden md:grid-cols-2">
               <StatTile :label="t('result.flightTime')">
                 <ResultCounter
                   :value="round(result.flightTime, 1)"
@@ -341,10 +351,10 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </CollapseTransition>
         </LabeledPanel>
 
-        <div class="flex gap-4">
+        <div class="flex flex-col gap-4 md:flex-row">
           <button
             type="button"
-            class="btn flex-1 btn-lg text-xl btn-primary"
+            class="btn min-h-16 flex-1 btn-lg text-xl btn-primary"
             :disabled="gun1Queue.length >= 5 || result.distance === 0"
             @click="addToQueue(gun1Queue)"
           >
@@ -352,7 +362,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </button>
           <button
             type="button"
-            class="btn flex-1 btn-lg text-xl btn-primary"
+            class="btn min-h-16 flex-1 btn-lg text-xl btn-primary"
             :disabled="gun2Queue.length >= 5 || result.distance === 0"
             @click="addToQueue(gun2Queue)"
           >

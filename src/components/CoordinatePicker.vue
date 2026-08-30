@@ -14,19 +14,19 @@ const { t } = useI18n()
 <template>
   <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
     <div class="form-control">
-      <label class="label"><span class="label-text text-lg">{{ t('coordinate.block') }}</span></label>
+      <label class="label"><span class="label-text text-base md:text-lg">{{ t('coordinate.block') }}</span></label>
       <DropdownSelect v-model="col" :options="COLUMNS" />
     </div>
     <div class="form-control">
-      <label class="label"><span class="label-text text-lg">{{ t('coordinate.row') }}</span></label>
+      <label class="label"><span class="label-text text-base md:text-lg">{{ t('coordinate.row') }}</span></label>
       <DropdownSelect v-model="row" :options="ROWS" />
     </div>
     <div class="form-control">
-      <label class="label"><span class="label-text text-lg">{{ t('coordinate.subX') }}</span></label>
+      <label class="label"><span class="label-text text-base md:text-lg">{{ t('coordinate.subX') }}</span></label>
       <DropdownSelect v-model="subX" :options="SUBS" />
     </div>
     <div class="form-control">
-      <label class="label"><span class="label-text text-lg">{{ t('coordinate.subY') }}</span></label>
+      <label class="label"><span class="label-text text-base md:text-lg">{{ t('coordinate.subY') }}</span></label>
       <DropdownSelect v-model="subY" :options="SUBS" />
     </div>
   </div>

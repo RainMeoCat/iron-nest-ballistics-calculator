@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
     <Transition name="dropdown-fade">
       <ul
         v-show="open"
-        class="menu dropdown-content left-auto right-0 max-h-96 w-56 flex-nowrap overflow-y-auto rounded-lg bg-base-100 p-2"
+        class="menu dropdown-content max-h-96 w-56 flex-nowrap overflow-y-auto rounded-lg bg-base-100 p-2 md:left-auto md:right-0"
       >
         <li v-for="lang in SUPPORTED_LANGUAGES" :key="lang.code">
           <button
