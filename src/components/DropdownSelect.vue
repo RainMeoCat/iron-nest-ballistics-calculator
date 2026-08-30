@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
   <div ref="rootRef" class="dropdown w-full">
     <button
       type="button"
-      class="btn w-full justify-between btn-outline font-normal btn-lg"
+      class="btn w-full justify-between btn-input font-normal btn-lg"
       @click="toggle"
     >
       {{ modelValue }}
@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
     <Transition name="dropdown-fade">
       <ul
         v-show="open"
-        class="menu dropdown-content max-h-72 w-full flex-nowrap overflow-y-auto rounded-2xl bg-base-200 p-2 shadow-2xl"
+        class="menu dropdown-content max-h-72 w-full flex-nowrap overflow-y-auto rounded-lg bg-base-100 p-2"
       >
         <li v-for="option in options" :key="option">
           <button

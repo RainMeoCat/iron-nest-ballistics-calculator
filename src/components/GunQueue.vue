@@ -23,7 +23,7 @@ function pinPosition(el: Element) {
 
 <template>
   <div
-    class="relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border-2 border-base-300 p-4 pb-10"
+    class="relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-4 pb-10"
   >
     <div class="flex flex-col gap-3">
       <TransitionGroup
@@ -35,12 +35,12 @@ function pinPosition(el: Element) {
         <div
           v-for="record in records"
           :key="record.id"
-          class="relative overflow-hidden rounded-2xl border border-base-300 bg-base-200 p-4 text-lg"
+          class="plate relative overflow-hidden border border-gray-500 bg-base-200 p-4 text-lg"
         >
           <Transition name="draw">
             <svg
               v-if="record.fired"
-              class="pointer-events-none absolute inset-0 h-full w-full stroke-base-300"
+              class="pointer-events-none absolute inset-0 h-full w-full stroke-gray-500"
               preserveAspectRatio="none"
             >
               <line
@@ -48,7 +48,7 @@ function pinPosition(el: Element) {
                 y1="0"
                 x2="100%"
                 y2="100%"
-                stroke-width="2"
+                stroke-width="1"
                 pathLength="100"
                 stroke-dasharray="100"
                 stroke-dashoffset="0"
@@ -106,12 +106,12 @@ function pinPosition(el: Element) {
       </TransitionGroup>
     </div>
     <span
-      class="pointer-events-none absolute bottom-0 left-1 text-5xl font-black whitespace-nowrap text-base-300 italic [font-synthesis:style] select-none"
+      class="pointer-events-none absolute bottom-0 left-1 text-5xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
     >
       {{ title }}
     </span>
     <span
-      class="pointer-events-none absolute right-1 bottom-0 flex items-end whitespace-nowrap text-base-300 italic [font-synthesis:style] select-none"
+      class="pointer-events-none absolute right-1 bottom-0 flex items-end whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
     >
       <Counter
         :value="records.length"

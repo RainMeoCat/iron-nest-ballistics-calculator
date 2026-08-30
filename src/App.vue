@@ -202,10 +202,10 @@ function removeFromQueue(queue: FireRecord[], id: number) {
 
 <template>
   <div
-    class="flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-to-b from-base-100 to-base-200 p-4 py-10 lg:flex-row lg:items-stretch"
+    class="app-shell flex min-h-screen flex-col items-center justify-center gap-6 p-4 py-10 lg:flex-row lg:items-stretch"
   >
     <div
-      class="card w-full max-w-4xl border border-base-300 bg-base-100 shadow-2xl"
+      class="plate card w-full max-w-4xl border-1 border-gray-500"
     >
       <div class="card-body gap-6 p-6 md:p-10">
         <header class="flex items-center gap-4">
@@ -215,10 +215,10 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </header>
         <button
           type="button"
-          class="btn mt-1 gap-2 btn-outline btn-primary"
+          class="btn mt-1 gap-2 btn-lg text-xl btn-primary"
           @click="gunModalOpen = true"
         >
-          <span class="text-lg opacity-70">火炮位置（點擊以變更）</span>
+          <span class="text-lg">火炮位置（點擊以變更）</span>
           <span class="text-lg">{{ gunLabel }}</span>
         </button>
         <Modal v-model:open="gunModalOpen">
@@ -245,7 +245,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </div>
           <template #actions>
             <form method="dialog">
-              <button type="submit" class="btn btn-secondary">
+              <button type="submit" class="btn btn-secondary text-lg">
                 完成
               </button>
             </form>
@@ -253,13 +253,13 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </Modal>
 
         <fieldset
-          class="relative rounded-2xl border-2 border-accent/40 bg-accent/5 p-6 pb-14"
+          class="plate relative bg-base-200 p-6 pb-18 border-gray-500 border"
         >
           <div
-            class="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
+            class="pointer-events-none absolute inset-0 overflow-hidden rounded-md"
           >
             <span
-              class="absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-accent/40 italic [font-synthesis:style] select-none md:text-5xl"
+              class="engraved-label absolute bottom-3 left-4 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
             >
               目標位置
             </span>
@@ -333,10 +333,10 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </fieldset>
 
         <fieldset
-          class="relative overflow-hidden rounded-2xl border-2 border-primary/40 bg-primary/5 p-6 pb-14"
+          class="plate relative overflow-hidden bg-base-200 p-6 pb-18 border-gray-500 border"
         >
           <span
-            class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-primary/40 italic [font-synthesis:style] select-none md:text-5xl"
+            class="engraved-label pointer-events-none absolute bottom-3 left-4 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
           >
             裝藥包數
           </span>
@@ -356,17 +356,17 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </fieldset>
 
         <div
-          class="relative overflow-hidden rounded-2xl border-2 border-info/40 bg-info/5 p-6 pb-14"
+          class="plate relative overflow-hidden bg-base-200 p-6 pb-18 border-gray-500 border"
         >
           <span
-            class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-info/40 italic [font-synthesis:style] select-none md:text-5xl"
+            class="engraved-label pointer-events-none absolute bottom-3 left-4 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
           >
             計算結果
           </span>
 
           <div class="mb-4 grid grid-cols-2 gap-4 md:grid-cols-3">
             <div
-              class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
+              class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
             >
               <Counter
                 :value="round(result.distance, 2)"
@@ -377,16 +377,17 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                 :horizontal-padding="0"
                 :border-radius="0"
                 :gradient-height="0"
+                text-color="#5a5d5f"
               />
               <span
-                class="pointer-events-none absolute bottom-0 left-2 text-2xl font-black whitespace-nowrap text-base-content/30 italic [font-synthesis:style] select-none"
+                class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
               >
                 距離（km）
               </span>
             </div>
 
             <div
-              class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
+              class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
             >
               <Counter
                 :value="round(result.azimuth, 1)"
@@ -397,16 +398,17 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                 :horizontal-padding="0"
                 :border-radius="0"
                 :gradient-height="0"
+                text-color="#5a5d5f"
               />
               <span
-                class="pointer-events-none absolute bottom-0 left-2 text-2xl font-black whitespace-nowrap text-base-content/30 italic [font-synthesis:style] select-none"
+                class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
               >
                 方位角
               </span>
             </div>
 
             <div
-              class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
+              class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
             >
               <Counter
                 :value="round(result.elevation, 1)"
@@ -417,9 +419,10 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                 :horizontal-padding="0"
                 :border-radius="0"
                 :gradient-height="0"
+                text-color="#5a5d5f"
               />
               <span
-                class="pointer-events-none absolute bottom-0 left-2 text-2xl font-black whitespace-nowrap text-base-content/30 italic [font-synthesis:style] select-none"
+                class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
               >
                 仰角
               </span>
@@ -430,7 +433,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             <div v-if="enableFireTime" class="collapse-row">
               <div class="grid min-h-0 grid-cols-2 gap-4 overflow-hidden">
                 <div
-                  class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
+                  class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
                 >
                   <Counter
                     :value="round(result.flightTime, 1)"
@@ -441,16 +444,17 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                     :horizontal-padding="0"
                     :border-radius="0"
                     :gradient-height="0"
+                    text-color="#5a5d5f"
                   />
                   <span
-                    class="pointer-events-none absolute bottom-0 left-2 text-2xl font-black whitespace-nowrap text-base-content/30 italic [font-synthesis:style] select-none"
+                    class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
                   >
                     飛行時間（秒）
                   </span>
                 </div>
 
                 <div
-                  class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
+                  class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
                 >
                   <div class="flex items-center justify-center gap-1">
                     <Counter
@@ -462,8 +466,9 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                       :horizontal-padding="0"
                       :border-radius="0"
                       :gradient-height="0"
+                      text-color="#5a5d5f"
                     />
-                    <span class="text-[28px] font-bold">:</span>
+                    <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
                     <Counter
                       :value="fireTimeParts[1]"
                       :places="[10, 1]"
@@ -473,8 +478,9 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                       :horizontal-padding="0"
                       :border-radius="0"
                       :gradient-height="0"
+                      text-color="#5a5d5f"
                     />
-                    <span class="text-[28px] font-bold">:</span>
+                    <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
                     <Counter
                       :value="fireTimeParts[2]"
                       :places="[10, 1]"
@@ -484,10 +490,11 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                       :horizontal-padding="0"
                       :border-radius="0"
                       :gradient-height="0"
+                      text-color="#5a5d5f"
                     />
                   </div>
                   <span
-                    class="pointer-events-none absolute bottom-0 left-2 text-2xl font-black whitespace-nowrap text-base-content/30 italic [font-synthesis:style] select-none"
+                    class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
                   >
                     開火時間
                   </span>
@@ -519,33 +526,29 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     </div>
 
     <div
-      class="card w-full max-w-4xl border border-base-300 bg-base-100 shadow-2xl lg:w-[48rem]"
+      class="plate card w-full max-w-4xl border-1 border-gray-500 lg:w-[48rem]"
     >
-      <div class="card-body gap-4 p-4">
-        <div
-          class="relative flex-1 overflow-hidden rounded-2xl border-2 border-warning/40 bg-warning/5 p-4 pb-14"
+      <div class="card-body relative gap-4 p-4">
+        <span
+          class="engraved-label pointer-events-none absolute bottom-4 left-10 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
         >
-          <span
-            class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-warning/40 italic [font-synthesis:style] select-none md:text-5xl"
-          >
-            火炮佇列
-          </span>
-          <div class="grid h-full grid-cols-2 gap-4">
-            <GunQueue
-              title="火炮1"
-              :records="gun1Queue"
-              :show-fire-time="enableFireTime"
-              @toggle-fired="(id) => toggleFired(gun1Queue, id)"
-              @remove="(id) => removeFromQueue(gun1Queue, id)"
-            />
-            <GunQueue
-              title="火炮2"
-              :records="gun2Queue"
-              :show-fire-time="enableFireTime"
-              @toggle-fired="(id) => toggleFired(gun2Queue, id)"
-              @remove="(id) => removeFromQueue(gun2Queue, id)"
-            />
-          </div>
+          火炮佇列
+        </span>
+        <div class="grid h-full grid-cols-2 gap-4 pb-16 p-6">
+          <GunQueue
+            title="火炮1"
+            :records="gun1Queue"
+            :show-fire-time="enableFireTime"
+            @toggle-fired="(id) => toggleFired(gun1Queue, id)"
+            @remove="(id) => removeFromQueue(gun1Queue, id)"
+          />
+          <GunQueue
+            title="火炮2"
+            :records="gun2Queue"
+            :show-fire-time="enableFireTime"
+            @toggle-fired="(id) => toggleFired(gun2Queue, id)"
+            @remove="(id) => removeFromQueue(gun2Queue, id)"
+          />
         </div>
       </div>
     </div>

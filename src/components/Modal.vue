@@ -31,7 +31,7 @@ function handleClose() {
 
 <template>
   <dialog ref="dialogRef" class="modal" @close="handleClose">
-    <div class="modal-box">
+    <div class="modal-box plate">
       <slot />
       <div v-if="$slots.actions" class="modal-action">
         <slot name="actions" />
