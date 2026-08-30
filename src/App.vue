@@ -23,6 +23,7 @@ const gunLabel = computed(
   () => `${gunCol.value}${gunRow.value} ${gunSubX.value}:${gunSubY.value}`,
 )
 const gunModalOpen = ref(true)
+const settingsModalOpen = ref(false)
 
 const targetCol = ref('A')
 const targetRow = ref(1)
@@ -181,7 +182,49 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           <h1 class="flex-1 text-3xl leading-tight font-bold">
             Iron Nest 彈道計算器
           </h1>
+          <button
+            type="button"
+            aria-label="設定"
+            class="btn btn-circle btn-lg btn-ghost"
+            @click="settingsModalOpen = true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
         </header>
+        <Modal v-model:open="settingsModalOpen">
+          <h3 class="text-lg font-bold text-secondary">
+            設定
+          </h3>
+          <div class="mt-4">
+            <label class="label w-fit cursor-pointer gap-2">
+              <input
+                v-model="enableFireTime"
+                type="checkbox"
+                class="checkbox checkbox-accent"
+              >
+              <span class="label-text text-lg">啟用目標落點時間／開火時間</span>
+            </label>
+          </div>
+          <template #actions>
+            <form method="dialog">
+              <button type="submit" class="btn btn-secondary text-lg">
+                完成
+              </button>
+            </form>
+          </template>
+        </Modal>
         <button
           type="button"
           class="btn mt-1 gap-2 btn-lg text-xl btn-primary"
@@ -217,15 +260,8 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             v-model:row="targetRow"
             v-model:sub-x="targetSubX"
             v-model:sub-y="targetSubY"
+            class="mb-4"
           />
-          <label class="label mt-4 w-fit cursor-pointer gap-2">
-            <input
-              v-model="enableFireTime"
-              type="checkbox"
-              class="checkbox checkbox-accent"
-            >
-            <span class="label-text text-lg">啟用目標落點時間／開火時間</span>
-          </label>
           <CollapseTransition :show="enableFireTime">
             <div class="form-control min-h-0 overflow-hidden">
               <label class="label"><span class="label-text text-lg">目標落點時間（24 小時制）</span></label>
