@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { FireRecord } from './types'
-import { Palette } from 'lucide-vue-next'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import Counter from './components/Counter.vue'
 import DropdownSelect from './components/DropdownSelect.vue'
 import GunQueue from './components/GunQueue.vue'
+import Modal from './components/Modal.vue'
 
 const COLUMNS = Array.from({ length: 20 }, (_, i) =>
   String.fromCharCode(65 + i)) // A-T
@@ -13,52 +13,6 @@ const ROWS = Array.from({ length: 10 }, (_, i) => i + 1) // 1-10
 const SUBS = Array.from({ length: 10 }, (_, i) => i) // 0-9
 const CHARGE_OPTIONS = Array.from({ length: 6 }, (_, i) => i + 1) // 1-6
 const MAX_RANGE_PER_CHARGE_KM = 5 // charge n can reach at most n * 5km
-
-const THEMES = [
-  'ironnest',
-  'light',
-  'dark',
-  'cupcake',
-  'bumblebee',
-  'emerald',
-  'corporate',
-  'synthwave',
-  'retro',
-  'cyberpunk',
-  'valentine',
-  'halloween',
-  'garden',
-  'forest',
-  'aqua',
-  'lofi',
-  'pastel',
-  'fantasy',
-  'wireframe',
-  'black',
-  'luxury',
-  'dracula',
-  'cmyk',
-  'autumn',
-  'business',
-  'acid',
-  'lemonade',
-  'night',
-  'coffee',
-  'winter',
-  'dim',
-  'nord',
-  'sunset',
-  'abyss',
-  'silk',
-  'caramellatte',
-]
-const currentTheme = ref('ironnest')
-
-function setTheme(theme: string) {
-  currentTheme.value = theme
-  document.documentElement.setAttribute('data-theme', theme)
-  localStorage.setItem('theme', theme)
-}
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
@@ -71,17 +25,7 @@ const gunSubY = ref(0)
 const gunLabel = computed(
   () => `${gunCol.value}${gunRow.value} ${gunSubX.value}:${gunSubY.value}`,
 )
-const gunModal = ref<HTMLDialogElement | null>(null)
-
-onMounted(() => {
-  gunModal.value?.showModal()
-
-  const savedTheme = localStorage.getItem('theme')
-  if (savedTheme && THEMES.includes(savedTheme)) {
-    currentTheme.value = savedTheme
-    document.documentElement.setAttribute('data-theme', savedTheme)
-  }
-})
+const gunModalOpen = ref(true)
 
 const targetCol = ref('A')
 const targetRow = ref(1)
@@ -268,92 +212,51 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           <h1 class="flex-1 text-3xl leading-tight font-bold">
             Iron Nest 彈道計算器
           </h1>
-          <div class="dropdown dropdown-end">
-            <div
-              tabindex="0"
-              role="button"
-              class="btn btn-circle btn-ghost btn-lg"
-              aria-label="選擇主題"
-            >
-              <Palette class="h-6 w-6" />
-            </div>
-            <ul
-              tabindex="0"
-              class="menu dropdown-content z-10 mt-2 max-h-96 w-56 flex-nowrap overflow-y-auto rounded-box bg-base-200 p-2 shadow-2xl"
-            >
-              <li v-for="theme in THEMES" :key="theme">
-                <button
-                  type="button"
-                  class="flex w-full items-center justify-between gap-3"
-                  :class="{ active: theme === currentTheme }"
-                  @click="setTheme(theme)"
-                >
-                  <span class="text-sm">{{ theme }}</span>
-                  <span
-                    :data-theme="theme"
-                    class="flex shrink-0 gap-1 rounded-field bg-base-100 p-1"
-                  >
-                    <span class="h-3 w-3 rounded-full bg-primary" />
-                    <span class="h-3 w-3 rounded-full bg-secondary" />
-                    <span class="h-3 w-3 rounded-full bg-accent" />
-                    <span class="h-3 w-3 rounded-full bg-neutral" />
-                  </span>
-                </button>
-              </li>
-            </ul>
-          </div>
         </header>
         <button
           type="button"
-          class="btn mt-1 gap-2 btn-outline btn-secondary"
-          @click="gunModal?.showModal()"
+          class="btn mt-1 gap-2 btn-outline btn-primary"
+          @click="gunModalOpen = true"
         >
           <span class="text-lg opacity-70">火炮位置（點擊以變更）</span>
           <span class="text-lg">{{ gunLabel }}</span>
         </button>
-        <dialog ref="gunModal" class="modal">
-          <div class="modal-box !overflow-visible">
-            <h3 class="text-lg font-bold text-secondary">
-              設定火炮位置
-            </h3>
-            <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-              <div class="form-control">
-                <label class="label"><span class="label-text text-lg">區塊</span></label>
-                <DropdownSelect v-model="gunCol" :options="COLUMNS" />
-              </div>
-              <div class="form-control">
-                <label class="label"><span class="label-text text-lg">列</span></label>
-                <DropdownSelect v-model="gunRow" :options="ROWS" />
-              </div>
-              <div class="form-control">
-                <label class="label"><span class="label-text text-lg">子座標 X</span></label>
-                <DropdownSelect v-model="gunSubX" :options="SUBS" />
-              </div>
-              <div class="form-control">
-                <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
-                <DropdownSelect v-model="gunSubY" :options="SUBS" />
-              </div>
+        <Modal v-model:open="gunModalOpen">
+          <h3 class="text-lg font-bold text-secondary">
+            設定火炮位置
+          </h3>
+          <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div class="form-control">
+              <label class="label"><span class="label-text text-lg">區塊</span></label>
+              <DropdownSelect v-model="gunCol" :options="COLUMNS" />
             </div>
-            <div class="modal-action">
-              <form method="dialog">
-                <button type="submit" class="btn btn-secondary">
-                  完成
-                </button>
-              </form>
+            <div class="form-control">
+              <label class="label"><span class="label-text text-lg">列</span></label>
+              <DropdownSelect v-model="gunRow" :options="ROWS" />
+            </div>
+            <div class="form-control">
+              <label class="label"><span class="label-text text-lg">子座標 X</span></label>
+              <DropdownSelect v-model="gunSubX" :options="SUBS" />
+            </div>
+            <div class="form-control">
+              <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
+              <DropdownSelect v-model="gunSubY" :options="SUBS" />
             </div>
           </div>
-          <form method="dialog" class="modal-backdrop">
-            <button type="submit">
-              close
-            </button>
-          </form>
-        </dialog>
+          <template #actions>
+            <form method="dialog">
+              <button type="submit" class="btn btn-secondary">
+                完成
+              </button>
+            </form>
+          </template>
+        </Modal>
 
         <fieldset
-          class="relative fieldset rounded-box border-2 border-accent/40 bg-accent/5 p-6 pb-14"
+          class="relative rounded-2xl border-2 border-accent/40 bg-accent/5 p-6 pb-14"
         >
           <div
-            class="pointer-events-none absolute inset-0 overflow-hidden rounded-box"
+            class="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
           >
             <span
               class="absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-accent/40 italic [font-synthesis:style] select-none md:text-5xl"
@@ -430,7 +333,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </fieldset>
 
         <fieldset
-          class="relative fieldset overflow-hidden rounded-box border-2 border-primary/40 bg-primary/5 p-6 pb-14"
+          class="relative overflow-hidden rounded-2xl border-2 border-primary/40 bg-primary/5 p-6 pb-14"
         >
           <span
             class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-primary/40 italic [font-synthesis:style] select-none md:text-5xl"
@@ -453,7 +356,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         </fieldset>
 
         <div
-          class="relative overflow-hidden rounded-box border-2 border-info/40 bg-info/5 p-6 pb-14"
+          class="relative overflow-hidden rounded-2xl border-2 border-info/40 bg-info/5 p-6 pb-14"
         >
           <span
             class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-info/40 italic [font-synthesis:style] select-none md:text-5xl"
@@ -463,7 +366,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
 
           <div class="mb-4 grid grid-cols-2 gap-4 md:grid-cols-3">
             <div
-              class="relative flex items-center justify-center overflow-hidden rounded-box bg-base-200 p-8"
+              class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
             >
               <Counter
                 :value="round(result.distance, 2)"
@@ -483,7 +386,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             </div>
 
             <div
-              class="relative flex items-center justify-center overflow-hidden rounded-box bg-base-200 p-8"
+              class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
             >
               <Counter
                 :value="round(result.azimuth, 1)"
@@ -503,7 +406,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             </div>
 
             <div
-              class="relative flex items-center justify-center overflow-hidden rounded-box bg-base-200 p-8"
+              class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
             >
               <Counter
                 :value="round(result.elevation, 1)"
@@ -527,7 +430,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             <div v-if="enableFireTime" class="collapse-row">
               <div class="grid min-h-0 grid-cols-2 gap-4 overflow-hidden">
                 <div
-                  class="relative flex items-center justify-center overflow-hidden rounded-box bg-base-200 p-8"
+                  class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
                 >
                   <Counter
                     :value="round(result.flightTime, 1)"
@@ -547,7 +450,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
                 </div>
 
                 <div
-                  class="relative flex items-center justify-center overflow-hidden rounded-box bg-base-200 p-8"
+                  class="relative flex items-center justify-center overflow-hidden rounded-2xl bg-base-200 p-8"
                 >
                   <div class="flex items-center justify-center gap-1">
                     <Counter
@@ -605,7 +508,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </button>
           <button
             type="button"
-            class="btn flex-1 btn-lg text-xl btn-secondary"
+            class="btn flex-1 btn-lg text-xl btn-primary"
             :disabled="gun2Queue.length >= 5 || result.distance === 0"
             @click="addToQueue(gun2Queue)"
           >
@@ -620,7 +523,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     >
       <div class="card-body gap-4 p-4">
         <div
-          class="relative flex-1 overflow-hidden rounded-box border-2 border-warning/40 bg-warning/5 p-4 pb-14"
+          class="relative flex-1 overflow-hidden rounded-2xl border-2 border-warning/40 bg-warning/5 p-4 pb-14"
         >
           <span
             class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-warning/40 italic [font-synthesis:style] select-none md:text-5xl"

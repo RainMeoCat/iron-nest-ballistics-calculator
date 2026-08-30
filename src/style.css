@@ -1,18 +1,6 @@
 @import 'tailwindcss';
 
-@plugin 'daisyui' {
-  themes:
-    light, dark, cupcake, bumblebee, emerald, corporate, synthwave, retro,
-    cyberpunk, valentine, halloween, garden, forest, aqua, lofi, pastel,
-    fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid,
-    lemonade, night, coffee, winter, dim, nord, sunset, abyss, silk,
-    caramellatte;
-}
-
-@plugin 'daisyui/theme' {
-  name: 'ironnest';
-  default: true;
-  color-scheme: dark;
+@theme {
   --color-primary: #f59e0b;
   --color-primary-content: #1a1005;
   --color-secondary: #3b82f6;
@@ -33,6 +21,7 @@
 
 @layer base {
   :root {
+    color-scheme: dark;
     font-family:
       'Noto Serif TC', 'Noto Serif', ui-serif, Georgia, Cambria,
       'Times New Roman', Times, serif;
@@ -52,5 +41,353 @@
   input,
   select {
     font: inherit;
+  }
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+}
+
+@layer components {
+  .card {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    padding-inline: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    background-color: var(--color-neutral);
+    color: var(--color-neutral-content);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      filter 0.15s ease,
+      opacity 0.15s ease;
+  }
+
+  .btn:hover {
+    filter: brightness(1.1);
+  }
+
+  .btn:active {
+    filter: brightness(0.92);
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    filter: none;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary-content);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--color-base-content);
+  }
+
+  .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--color-base-content) 10%, transparent);
+    filter: none;
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    border-color: var(--color-base-300);
+    color: var(--color-base-content);
+  }
+
+  .btn-outline.btn-primary {
+    background-color: transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .btn-outline.btn-primary:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 12%, transparent);
+    filter: none;
+  }
+
+  .btn-outline.btn-secondary {
+    background-color: transparent;
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  .btn-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border-radius: 9999px;
+  }
+
+  .btn-circle.btn-lg {
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0;
+  }
+
+  .btn-circle.btn-sm {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+  }
+
+  .btn-lg {
+    height: 3.5rem;
+    padding-inline: 1.5rem;
+    font-size: 1.125rem;
+  }
+
+  .btn-sm {
+    height: 2rem;
+    padding-inline: 0.75rem;
+    font-size: 0.75rem;
+    gap: 0.25rem;
+  }
+
+  input.btn[type='radio'] {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  input.btn[type='radio']::before {
+    content: attr(aria-label);
+  }
+
+  input.btn[type='radio']:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-content);
+  }
+
+  input.btn[type='radio']:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-content {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 0.5rem);
+    z-index: 10;
+  }
+
+  .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .menu li > button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    background-color: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .menu li > button:hover {
+    background-color: var(--color-base-300);
+  }
+
+  .menu li > button.active {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  dialog.modal {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    display: none;
+    place-items: center;
+    padding: 1rem;
+    background: transparent;
+    border: 0;
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      display 0.2s allow-discrete,
+      overlay 0.2s allow-discrete;
+  }
+
+  dialog.modal[open] {
+    display: grid;
+    opacity: 1;
+  }
+
+  @starting-style {
+    dialog.modal[open] {
+      opacity: 0;
+    }
+  }
+
+  dialog.modal::backdrop {
+    background-color: rgb(0 0 0 / 0%);
+    transition:
+      background-color 0.2s ease,
+      display 0.2s allow-discrete,
+      overlay 0.2s allow-discrete;
+  }
+
+  dialog.modal[open]::backdrop {
+    background-color: rgb(0 0 0 / 60%);
+  }
+
+  @starting-style {
+    dialog.modal[open]::backdrop {
+      background-color: rgb(0 0 0 / 0%);
+    }
+  }
+
+  .modal-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 32rem;
+    background-color: var(--color-base-100);
+    color: var(--color-base-content);
+    border-radius: 1rem;
+    padding: 1.5rem;
+  }
+
+  .modal-action {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .modal-backdrop button {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: default;
+  }
+
+  .form-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .label-text {
+    opacity: 0.8;
+  }
+
+  .checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid var(--color-base-300);
+    border-radius: 0.375rem;
+    background-color: var(--color-base-100);
+    cursor: pointer;
+  }
+
+  .checkbox-accent:checked {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .checkbox-accent:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 0.35rem;
+    height: 0.6rem;
+    border: solid var(--color-accent-content);
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .input {
+    display: block;
+    width: 100%;
+    height: 2.5rem;
+    padding-inline: 0.75rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-base-100);
+    color: var(--color-base-content);
+  }
+
+  .input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
+  .input-bordered {
+    border: 1px solid var(--color-base-300);
+  }
+
+  .input-lg {
+    height: 3.5rem;
+    font-size: 1.125rem;
   }
 }

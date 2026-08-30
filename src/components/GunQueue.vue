@@ -23,7 +23,7 @@ function pinPosition(el: Element) {
 
 <template>
   <div
-    class="relative flex h-full flex-col gap-3 overflow-hidden rounded-box border-2 border-base-300 p-4 pb-10"
+    class="relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border-2 border-base-300 p-4 pb-10"
   >
     <div class="flex flex-col gap-3">
       <TransitionGroup
@@ -35,7 +35,7 @@ function pinPosition(el: Element) {
         <div
           v-for="record in records"
           :key="record.id"
-          class="relative overflow-hidden rounded-box border border-base-300 bg-base-200 p-4 text-lg"
+          class="relative overflow-hidden rounded-2xl border border-base-300 bg-base-200 p-4 text-lg"
         >
           <Transition name="draw">
             <svg
