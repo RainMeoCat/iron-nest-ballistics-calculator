@@ -8,6 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write . && eslint . --fix",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +22,8 @@
     "@vitejs/plugin-vue": "^5.1.4",
     "daisyui": "^5.7.22",
     "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",
     "typescript": "~5.6.2",
     "vite": "^5.4.10",

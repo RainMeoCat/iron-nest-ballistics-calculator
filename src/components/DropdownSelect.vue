@@ -18,11 +18,18 @@ function choose(option: string | number, event: MouseEvent) {
 
 <template>
   <div class="dropdown w-full">
-    <div tabindex="0" role="button" class="btn btn-outline btn-lg w-full justify-between font-normal">
+    <div
+      tabindex="0"
+      role="button"
+      class="btn w-full justify-between btn-outline font-normal btn-lg"
+    >
       {{ modelValue }}
       <ChevronDown class="h-4 w-4 opacity-60" />
     </div>
-    <ul tabindex="0" class="dropdown-content menu z-10 mt-2 max-h-72 w-full flex-nowrap overflow-y-auto rounded-box bg-base-200 p-2 shadow-2xl">
+    <ul
+      tabindex="0"
+      class="menu dropdown-content z-10 mt-2 max-h-72 w-full flex-nowrap overflow-y-auto rounded-box bg-base-200 p-2 shadow-2xl"
+    >
       <li v-for="option in options" :key="option">
         <button
           type="button"

@@ -55,14 +55,20 @@ function derivePlaces(value: number): PlaceValue[] {
       return '.'
     const dotIndex = a.indexOf('.')
     const isInteger = dotIndex === -1
-    const exponent = isInteger ? a.length - i - 1 : i < dotIndex ? dotIndex - i - 1 : -(i - dotIndex)
+    const exponent = isInteger
+      ? a.length - i - 1
+      : i < dotIndex
+        ? dotIndex - i - 1
+        : -(i - dotIndex)
     return 10 ** exponent
   })
 }
 
 const height = computed(() => props.fontSize + props.padding)
 
-const places = computed<PlaceValue[]>(() => props.places ?? derivePlaces(props.value))
+const places = computed<PlaceValue[]>(
+  () => props.places ?? derivePlaces(props.value),
+)
 
 const computedCounterStyle = computed<CSSProperties>(() => ({
   fontSize: `${props.fontSize}px`,
@@ -104,12 +110,20 @@ const DigitColumn = defineComponent({
     place: { type: Number, required: true },
     value: { type: Number, required: true },
     height: { type: Number, required: true },
-    digitStyle: { type: Object as () => CSSProperties | undefined, default: undefined },
+    digitStyle: {
+      type: Object as () => CSSProperties | undefined,
+      default: undefined,
+    },
   },
   setup(columnProps) {
-    const valueRoundedToPlace = computed(() => getValueRoundedToPlace(columnProps.value, columnProps.place))
+    const valueRoundedToPlace = computed(() =>
+      getValueRoundedToPlace(columnProps.value, columnProps.place),
+    )
 
-    const animatedValue = useSpring(valueRoundedToPlace.value, { stiffness: 300, damping: 30 })
+    const animatedValue = useSpring(valueRoundedToPlace.value, {
+      stiffness: 300,
+      damping: 30,
+    })
 
     watchEffect(() => {
       animatedValue.set(valueRoundedToPlace.value)
@@ -149,7 +163,10 @@ const DigitColumn = defineComponent({
       return h(
         'span',
         { style: wrapperStyle },
-        digitNodes.map(({ i, y }) => h(motion.span, { key: i, style: { ...baseStyle, y } }, () => String(i))),
+        digitNodes.map(({ i, y }) =>
+          h(motion.span, { key: i, style: { ...baseStyle, y } }, () =>
+            String(i)),
+        ),
       )
     }
   },
@@ -157,7 +174,13 @@ const DigitColumn = defineComponent({
 </script>
 
 <template>
-  <span :style="{ position: 'relative', display: 'inline-block', ...props.containerStyle }">
+  <span
+    :style="{
+      position: 'relative',
+      display: 'inline-block',
+      ...props.containerStyle,
+    }"
+  >
     <span :style="computedCounterStyle">
       <template v-for="placeValue in places" :key="placeValue">
         <span
@@ -174,7 +197,13 @@ const DigitColumn = defineComponent({
         >
           .
         </span>
-        <DigitColumn v-else :place="placeValue as number" :value="value" :height="height" :digit-style="props.digitStyle" />
+        <DigitColumn
+          v-else
+          :place="placeValue as number"
+          :value="value"
+          :height="height"
+          :digit-style="props.digitStyle"
+        />
       </template>
     </span>
     <span :style="gradientContainerStyle">
