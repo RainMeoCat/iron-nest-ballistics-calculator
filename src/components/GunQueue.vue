@@ -106,12 +106,12 @@ function pinPosition(el: Element) {
       </TransitionGroup>
     </div>
     <span
-      class="pointer-events-none absolute bottom-0 left-1 text-5xl font-black whitespace-nowrap text-base-content/20 italic [font-synthesis:style] select-none"
+      class="pointer-events-none absolute bottom-0 left-1 text-5xl font-black whitespace-nowrap text-base-300 italic [font-synthesis:style] select-none"
     >
       {{ title }}
     </span>
     <span
-      class="pointer-events-none absolute right-1 bottom-0 flex items-end whitespace-nowrap text-base-content/20 italic [font-synthesis:style] select-none"
+      class="pointer-events-none absolute right-1 bottom-0 flex items-end whitespace-nowrap text-base-300 italic [font-synthesis:style] select-none"
     >
       <Counter
         :value="records.length"
