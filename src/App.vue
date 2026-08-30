@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import type { FireRecord } from './types'
 import { Palette } from 'lucide-vue-next'
 import { computed, onMounted, ref, watch } from 'vue'
 import Counter from './components/Counter.vue'
 import DropdownSelect from './components/DropdownSelect.vue'
+import GunQueue from './components/GunQueue.vue'
 
 const COLUMNS = Array.from({ length: 20 }, (_, i) =>
   String.fromCharCode(65 + i)) // A-T
@@ -213,11 +215,50 @@ function round(n: number, digits: number) {
 const fireTimeParts = computed(() =>
   result.value.fireTime.split(':').map(Number),
 )
+
+const targetLabel = computed(
+  () => `${targetCol.value}${targetRow.value} ${targetSubX.value}:${targetSubY.value}`,
+)
+
+const targetImpactTime = computed(
+  () => `${pad(Number(targetHourStr.value || 0))}:${pad(Number(targetMinuteStr.value || 0))}:${pad(Number(targetSecondStr.value || 0))}`,
+)
+
+let nextRecordId = 0
+const gun1Queue = ref<FireRecord[]>([])
+const gun2Queue = ref<FireRecord[]>([])
+
+function addToQueue(queue: FireRecord[]) {
+  if (queue.length >= 5 || result.value.distance === 0)
+    return
+  queue.push({
+    id: nextRecordId++,
+    targetLabel: targetLabel.value,
+    charges: charges.value,
+    azimuth: round(result.value.azimuth, 1),
+    elevation: round(result.value.elevation, 1),
+    impactTime: enableFireTime.value ? targetImpactTime.value : null,
+    fireTime: enableFireTime.value ? result.value.fireTime : null,
+    fired: false,
+  })
+}
+
+function toggleFired(queue: FireRecord[], id: number) {
+  const record = queue.find(r => r.id === id)
+  if (record)
+    record.fired = !record.fired
+}
+
+function removeFromQueue(queue: FireRecord[], id: number) {
+  const index = queue.findIndex(r => r.id === id)
+  if (index !== -1)
+    queue.splice(index, 1)
+}
 </script>
 
 <template>
   <div
-    class="flex min-h-screen items-center justify-center bg-gradient-to-b from-base-100 to-base-200 p-4 py-10"
+    class="flex min-h-screen flex-col items-center justify-center gap-6 bg-gradient-to-b from-base-100 to-base-200 p-4 py-10 lg:flex-row lg:items-stretch"
   >
     <div
       class="card w-full max-w-4xl border border-base-300 bg-base-100 shadow-2xl"
@@ -551,6 +592,57 @@ const fireTimeParts = computed(() =>
               </div>
             </div>
           </Transition>
+        </div>
+
+        <div class="flex gap-4">
+          <button
+            type="button"
+            class="btn flex-1 btn-lg text-xl btn-primary"
+            :disabled="gun1Queue.length >= 5 || result.distance === 0"
+            @click="addToQueue(gun1Queue)"
+          >
+            載入火炮1（{{ gun1Queue.length }}/5）
+          </button>
+          <button
+            type="button"
+            class="btn flex-1 btn-lg text-xl btn-secondary"
+            :disabled="gun2Queue.length >= 5 || result.distance === 0"
+            @click="addToQueue(gun2Queue)"
+          >
+            載入火炮2（{{ gun2Queue.length }}/5）
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="card w-full max-w-4xl border border-base-300 bg-base-100 shadow-2xl lg:w-[48rem]"
+    >
+      <div class="card-body gap-4 p-4">
+        <div
+          class="relative flex-1 overflow-hidden rounded-box border-2 border-warning/40 bg-warning/5 p-4 pb-14"
+        >
+          <span
+            class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-warning/15 italic [font-synthesis:style] select-none md:text-5xl"
+          >
+            火炮佇列
+          </span>
+          <div class="grid h-full grid-cols-2 gap-4">
+            <GunQueue
+              title="火炮1"
+              :records="gun1Queue"
+              :show-fire-time="enableFireTime"
+              @toggle-fired="(id) => toggleFired(gun1Queue, id)"
+              @remove="(id) => removeFromQueue(gun1Queue, id)"
+            />
+            <GunQueue
+              title="火炮2"
+              :records="gun2Queue"
+              :show-fire-time="enableFireTime"
+              @toggle-fired="(id) => toggleFired(gun2Queue, id)"
+              @remove="(id) => removeFromQueue(gun2Queue, id)"
+            />
+          </div>
         </div>
       </div>
     </div>
