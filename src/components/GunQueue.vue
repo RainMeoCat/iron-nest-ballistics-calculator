@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FireRecord } from '../types'
 import { Check, Trash2 } from 'lucide-vue-next'
+import CollapseTransition from './CollapseTransition.vue'
 import Counter from './Counter.vue'
 
 defineProps<{
@@ -88,19 +89,14 @@ function pinPosition(el: Element) {
               <span>方位 {{ record.azimuth }}°</span>
               <span>仰角 {{ record.elevation }}</span>
             </div>
-            <Transition name="collapse">
+            <CollapseTransition :show="showFireTime && !!(record.impactTime || record.fireTime)">
               <div
-                v-if="showFireTime && (record.impactTime || record.fireTime)"
-                class="collapse-row"
+                class="grid min-h-0 grid-cols-2 gap-x-3 overflow-hidden text-lg opacity-70"
               >
-                <div
-                  class="grid min-h-0 grid-cols-2 gap-x-3 overflow-hidden text-lg opacity-70"
-                >
-                  <span v-if="record.fireTime">開火 {{ record.fireTime }}</span>
-                  <span v-if="record.impactTime">落地 {{ record.impactTime }}</span>
-                </div>
+                <span v-if="record.fireTime">開火 {{ record.fireTime }}</span>
+                <span v-if="record.impactTime">落地 {{ record.impactTime }}</span>
               </div>
-            </Transition>
+            </CollapseTransition>
           </div>
         </div>
       </TransitionGroup>
@@ -129,25 +125,6 @@ function pinPosition(el: Element) {
 </template>
 
 <style scoped>
-.collapse-row {
-  display: grid;
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.collapse-enter-active,
-.collapse-leave-active {
-  transition:
-    grid-template-rows 1s ease,
-    opacity 1s ease;
-}
-
-.collapse-enter-from,
-.collapse-leave-to {
-  grid-template-rows: 0fr;
-  opacity: 0;
-}
-
 .draw-enter-active,
 .draw-leave-active {
   transition: opacity 0.6s ease;

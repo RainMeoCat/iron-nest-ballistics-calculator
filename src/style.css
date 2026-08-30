@@ -605,4 +605,23 @@
     height: 3.5rem;
     font-size: 1.125rem;
   }
+
+  .collapse-row {
+    display: grid;
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .collapse-enter-active,
+  .collapse-leave-active {
+    transition:
+      grid-template-rows 1s ease,
+      opacity 1s ease;
+  }
+
+  .collapse-enter-from,
+  .collapse-leave-to {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
 }

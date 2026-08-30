@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { FireRecord } from './types'
 import { computed, ref, watch } from 'vue'
-import Counter from './components/Counter.vue'
-import DropdownSelect from './components/DropdownSelect.vue'
+import CollapseTransition from './components/CollapseTransition.vue'
+import CoordinatePicker from './components/CoordinatePicker.vue'
 import GunQueue from './components/GunQueue.vue'
+import LabeledPanel from './components/LabeledPanel.vue'
 import Modal from './components/Modal.vue'
-
-const COLUMNS = Array.from({ length: 20 }, (_, i) =>
-  String.fromCharCode(65 + i)) // A-T
-const ROWS = Array.from({ length: 10 }, (_, i) => i + 1) // 1-10
-const SUBS = Array.from({ length: 10 }, (_, i) => i) // 0-9
-const CHARGE_OPTIONS = Array.from({ length: 6 }, (_, i) => i + 1) // 1-6
-const MAX_RANGE_PER_CHARGE_KM = 5 // charge n can reach at most n * 5km
+import ResultCounter from './components/ResultCounter.vue'
+import StatTile from './components/StatTile.vue'
+import TimeInputGroup from './components/TimeInputGroup.vue'
+import { CHARGE_OPTIONS, MAX_RANGE_PER_CHARGE_KM } from './constants'
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
@@ -39,34 +36,6 @@ const enableFireTime = ref(true)
 const targetHourStr = ref('00')
 const targetMinuteStr = ref('00')
 const targetSecondStr = ref('00')
-const minuteInput = ref<HTMLInputElement | null>(null)
-const secondInput = ref<HTMLInputElement | null>(null)
-
-function timeFieldModel(
-  raw: Ref<string>,
-  max: number,
-  next?: Ref<HTMLInputElement | null>,
-) {
-  return computed<string>({
-    get: () => raw.value,
-    set: (v) => {
-      let digits = v.replace(/\D/g, '').slice(0, 2)
-      if (digits !== '' && Number(digits) > max)
-        digits = digits.slice(0, -1)
-      raw.value = digits
-      if (digits.length === 2)
-        next?.value?.focus()
-    },
-  })
-}
-
-const hourModel = timeFieldModel(targetHourStr, 23, minuteInput)
-const minuteModel = timeFieldModel(targetMinuteStr, 59, secondInput)
-const secondModel = timeFieldModel(targetSecondStr, 59)
-
-function selectAllOnFocus(e: Event) {
-  ;(e.target as HTMLInputElement).select()
-}
 
 function timeToSeconds(h: number, m: number, s: number) {
   return h * 3600 + m * 60 + s
@@ -225,23 +194,13 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           <h3 class="text-lg font-bold text-secondary">
             設定火炮位置
           </h3>
-          <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">區塊</span></label>
-              <DropdownSelect v-model="gunCol" :options="COLUMNS" />
-            </div>
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">列</span></label>
-              <DropdownSelect v-model="gunRow" :options="ROWS" />
-            </div>
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">子座標 X</span></label>
-              <DropdownSelect v-model="gunSubX" :options="SUBS" />
-            </div>
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
-              <DropdownSelect v-model="gunSubY" :options="SUBS" />
-            </div>
+          <div class="mt-4">
+            <CoordinatePicker
+              v-model:col="gunCol"
+              v-model:row="gunRow"
+              v-model:sub-x="gunSubX"
+              v-model:sub-y="gunSubY"
+            />
           </div>
           <template #actions>
             <form method="dialog">
@@ -252,36 +211,13 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </template>
         </Modal>
 
-        <fieldset
-          class="plate relative bg-base-200 p-6 pb-18 border-gray-500 border"
-        >
-          <div
-            class="pointer-events-none absolute inset-0 overflow-hidden rounded-md"
-          >
-            <span
-              class="engraved-label absolute bottom-3 left-4 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
-            >
-              目標位置
-            </span>
-          </div>
-          <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">區塊</span></label>
-              <DropdownSelect v-model="targetCol" :options="COLUMNS" />
-            </div>
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">列</span></label>
-              <DropdownSelect v-model="targetRow" :options="ROWS" />
-            </div>
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">子座標 X</span></label>
-              <DropdownSelect v-model="targetSubX" :options="SUBS" />
-            </div>
-            <div class="form-control">
-              <label class="label"><span class="label-text text-lg">子座標 Y</span></label>
-              <DropdownSelect v-model="targetSubY" :options="SUBS" />
-            </div>
-          </div>
+        <LabeledPanel label="目標位置" tag="fieldset" overflow-visible>
+          <CoordinatePicker
+            v-model:col="targetCol"
+            v-model:row="targetRow"
+            v-model:sub-x="targetSubX"
+            v-model:sub-y="targetSubY"
+          />
           <label class="label mt-4 w-fit cursor-pointer gap-2">
             <input
               v-model="enableFireTime"
@@ -290,56 +226,19 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             >
             <span class="label-text text-lg">啟用目標落點時間／開火時間</span>
           </label>
-          <Transition name="collapse">
-            <div v-if="enableFireTime" class="collapse-row">
-              <div class="form-control min-h-0 overflow-hidden">
-                <label class="label"><span class="label-text text-lg">目標落點時間（24 小時制）</span></label>
-                <div class="flex items-center gap-2">
-                  <input
-                    v-model="hourModel"
-                    type="text"
-                    inputmode="numeric"
-                    pattern="[0-9]*"
-                    maxlength="2"
-                    class="input-bordered input w-full text-center input-lg"
-                    @focus="selectAllOnFocus"
-                  >
-                  <span class="text-lg font-bold">:</span>
-                  <input
-                    ref="minuteInput"
-                    v-model="minuteModel"
-                    type="text"
-                    inputmode="numeric"
-                    pattern="[0-9]*"
-                    maxlength="2"
-                    class="input-bordered input w-full text-center input-lg"
-                    @focus="selectAllOnFocus"
-                  >
-                  <span class="text-lg font-bold">:</span>
-                  <input
-                    ref="secondInput"
-                    v-model="secondModel"
-                    type="text"
-                    inputmode="numeric"
-                    pattern="[0-9]*"
-                    maxlength="2"
-                    class="input-bordered input w-full text-center input-lg"
-                    @focus="selectAllOnFocus"
-                  >
-                </div>
-              </div>
+          <CollapseTransition :show="enableFireTime">
+            <div class="form-control min-h-0 overflow-hidden">
+              <label class="label"><span class="label-text text-lg">目標落點時間（24 小時制）</span></label>
+              <TimeInputGroup
+                v-model:hour="targetHourStr"
+                v-model:minute="targetMinuteStr"
+                v-model:second="targetSecondStr"
+              />
             </div>
-          </Transition>
-        </fieldset>
+          </CollapseTransition>
+        </LabeledPanel>
 
-        <fieldset
-          class="plate relative overflow-hidden bg-base-200 p-6 pb-18 border-gray-500 border"
-        >
-          <span
-            class="engraved-label pointer-events-none absolute bottom-3 left-4 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
-          >
-            裝藥包數
-          </span>
+        <LabeledPanel label="裝藥包數" tag="fieldset">
           <div class="grid w-full grid-cols-6 gap-2">
             <input
               v-for="n in CHARGE_OPTIONS"
@@ -353,156 +252,53 @@ function removeFromQueue(queue: FireRecord[], id: number) {
               class="btn btn-lg"
             >
           </div>
-        </fieldset>
+        </LabeledPanel>
 
-        <div
-          class="plate relative overflow-hidden bg-base-200 p-6 pb-18 border-gray-500 border"
-        >
-          <span
-            class="engraved-label pointer-events-none absolute bottom-3 left-4 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
-          >
-            計算結果
-          </span>
-
+        <LabeledPanel label="計算結果">
           <div class="mb-4 grid grid-cols-2 gap-4 md:grid-cols-3">
-            <div
-              class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
-            >
-              <Counter
+            <StatTile label="距離（km）">
+              <ResultCounter
                 :value="round(result.distance, 2)"
                 :places="[10, 1, '.', 0.1, 0.01]"
-                :font-size="28"
-                :font-weight="700"
-                :gap="1"
-                :horizontal-padding="0"
-                :border-radius="0"
-                :gradient-height="0"
-                text-color="#5a5d5f"
               />
-              <span
-                class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
-              >
-                距離（km）
-              </span>
-            </div>
+            </StatTile>
 
-            <div
-              class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
-            >
-              <Counter
+            <StatTile label="方位角">
+              <ResultCounter
                 :value="round(result.azimuth, 1)"
                 :places="[100, 10, 1, '.', 0.1]"
-                :font-size="28"
-                :font-weight="700"
-                :gap="1"
-                :horizontal-padding="0"
-                :border-radius="0"
-                :gradient-height="0"
-                text-color="#5a5d5f"
               />
-              <span
-                class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
-              >
-                方位角
-              </span>
-            </div>
+            </StatTile>
 
-            <div
-              class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
-            >
-              <Counter
+            <StatTile label="仰角">
+              <ResultCounter
                 :value="round(result.elevation, 1)"
                 :places="[10, 1, '.', 0.1]"
-                :font-size="28"
-                :font-weight="700"
-                :gap="1"
-                :horizontal-padding="0"
-                :border-radius="0"
-                :gradient-height="0"
-                text-color="#5a5d5f"
               />
-              <span
-                class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
-              >
-                仰角
-              </span>
-            </div>
+            </StatTile>
           </div>
 
-          <Transition name="collapse">
-            <div v-if="enableFireTime" class="collapse-row">
-              <div class="grid min-h-0 grid-cols-2 gap-4 overflow-hidden">
-                <div
-                  class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
-                >
-                  <Counter
-                    :value="round(result.flightTime, 1)"
-                    :places="[10, 1, '.', 0.1]"
-                    :font-size="28"
-                    :font-weight="700"
-                    :gap="1"
-                    :horizontal-padding="0"
-                    :border-radius="0"
-                    :gradient-height="0"
-                    text-color="#5a5d5f"
-                  />
-                  <span
-                    class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
-                  >
-                    飛行時間（秒）
-                  </span>
-                </div>
+          <CollapseTransition :show="enableFireTime">
+            <div class="grid min-h-0 grid-cols-2 gap-4 overflow-hidden">
+              <StatTile label="飛行時間（秒）">
+                <ResultCounter
+                  :value="round(result.flightTime, 1)"
+                  :places="[10, 1, '.', 0.1]"
+                />
+              </StatTile>
 
-                <div
-                  class="relative flex items-center justify-center overflow-hidden rounded-2xl border-2 border-[#5a5d5f] p-8"
-                >
-                  <div class="flex items-center justify-center gap-1">
-                    <Counter
-                      :value="fireTimeParts[0]"
-                      :places="[10, 1]"
-                      :font-size="28"
-                      :font-weight="700"
-                      :gap="1"
-                      :horizontal-padding="0"
-                      :border-radius="0"
-                      :gradient-height="0"
-                      text-color="#5a5d5f"
-                    />
-                    <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
-                    <Counter
-                      :value="fireTimeParts[1]"
-                      :places="[10, 1]"
-                      :font-size="28"
-                      :font-weight="700"
-                      :gap="1"
-                      :horizontal-padding="0"
-                      :border-radius="0"
-                      :gradient-height="0"
-                      text-color="#5a5d5f"
-                    />
-                    <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
-                    <Counter
-                      :value="fireTimeParts[2]"
-                      :places="[10, 1]"
-                      :font-size="28"
-                      :font-weight="700"
-                      :gap="1"
-                      :horizontal-padding="0"
-                      :border-radius="0"
-                      :gradient-height="0"
-                      text-color="#5a5d5f"
-                    />
-                  </div>
-                  <span
-                    class="pointer-events-none absolute -bottom-1 left-1 text-2xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none"
-                  >
-                    開火時間
-                  </span>
+              <StatTile label="開火時間">
+                <div class="flex items-center justify-center gap-1">
+                  <ResultCounter :value="fireTimeParts[0]" :places="[10, 1]" />
+                  <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
+                  <ResultCounter :value="fireTimeParts[1]" :places="[10, 1]" />
+                  <span class="text-[#5a5d5f] text-[28px] font-bold">:</span>
+                  <ResultCounter :value="fireTimeParts[2]" :places="[10, 1]" />
                 </div>
-              </div>
+              </StatTile>
             </div>
-          </Transition>
-        </div>
+          </CollapseTransition>
+        </LabeledPanel>
 
         <div class="flex gap-4">
           <button
@@ -554,24 +350,3 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     </div>
   </div>
 </template>
-
-<style scoped>
-.collapse-row {
-  display: grid;
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.collapse-enter-active,
-.collapse-leave-active {
-  transition:
-    grid-template-rows 1s ease,
-    opacity 1s ease;
-}
-
-.collapse-enter-from,
-.collapse-leave-to {
-  grid-template-rows: 0fr;
-  opacity: 0;
-}
-</style>
