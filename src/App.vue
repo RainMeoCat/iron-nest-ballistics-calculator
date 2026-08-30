@@ -315,7 +315,7 @@ const fireTimeParts = computed(() =>
             class="pointer-events-none absolute inset-0 overflow-hidden rounded-box"
           >
             <span
-              class="absolute bottom-1 left-4 text-4xl font-black whitespace-nowrap text-accent/15 select-none md:text-5xl"
+              class="absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-accent/15 select-none md:text-5xl"
             >
               目標位置
             </span>
@@ -392,7 +392,7 @@ const fireTimeParts = computed(() =>
           class="relative fieldset overflow-hidden rounded-box border-2 border-primary/40 bg-primary/5 p-6 pb-14"
         >
           <span
-            class="pointer-events-none absolute bottom-1 left-4 text-4xl font-black whitespace-nowrap text-primary/15 select-none md:text-5xl"
+            class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-primary/15 select-none md:text-5xl"
           >
             裝藥包數
           </span>
@@ -415,7 +415,7 @@ const fireTimeParts = computed(() =>
           class="relative overflow-hidden rounded-box border-2 border-info/40 bg-info/5 p-6 pb-14"
         >
           <span
-            class="pointer-events-none absolute bottom-1 left-4 text-4xl font-black whitespace-nowrap text-info/15 select-none md:text-5xl"
+            class="pointer-events-none absolute bottom-1 left-1 text-4xl font-black whitespace-nowrap text-info/15 select-none md:text-5xl"
           >
             計算結果
           </span>
