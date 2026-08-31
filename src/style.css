@@ -37,17 +37,6 @@
     margin: 0;
   }
 
-  @media (max-height: 900px) {
-    html {
-      --page-zoom: 0.6;
-      zoom: var(--page-zoom);
-    }
-
-    .app-shell {
-      min-height: calc(100vh / var(--page-zoom)) !important;
-    }
-  }
-
   button,
   input,
   select {
