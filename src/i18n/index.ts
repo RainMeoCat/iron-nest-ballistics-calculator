@@ -65,9 +65,8 @@ export type LocaleCode = keyof typeof messages
 
 function detectInitialLocale(): LocaleCode {
   const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved && saved in messages)
-    return saved as LocaleCode
-  return 'zh-TW'
+  if (saved && saved in messages) return saved as LocaleCode
+  return 'en'
 }
 
 export const i18n = createI18n({
