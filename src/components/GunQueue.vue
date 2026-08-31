@@ -107,7 +107,7 @@ function pinPosition(el: Element) {
       </TransitionGroup>
     </div>
     <span
-      class="pointer-events-none absolute bottom-0 left-1 text-xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none md:text-5xl"
+      class="pointer-events-none absolute bottom-0 left-1 text-xl font-black whitespace-nowrap text-[#5a5d5f] italic [font-synthesis:style] select-none md:text-4xl"
     >
       {{ title }}
     </span>
@@ -116,7 +116,7 @@ function pinPosition(el: Element) {
     >
       <Counter
         :value="records.length"
-        :font-size="isMobile ? 20 : 48"
+        :font-size="isMobile ? 20 : 36"
         :font-weight="900"
         :gap="0"
         :horizontal-padding="0"
@@ -124,7 +124,7 @@ function pinPosition(el: Element) {
         :gradient-height="0"
         :digit-style="{ width: '1.3ch' }"
       />
-      <span class="text-xl font-black md:text-5xl">/5</span>
+      <span class="text-xl font-black md:text-4xl">/5</span>
     </span>
   </div>
 </template>

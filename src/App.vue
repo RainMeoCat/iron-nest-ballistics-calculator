@@ -376,11 +376,11 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     </div>
 
     <div
-      class="plate card hidden w-full max-w-4xl border-1 border-gray-500 md:block lg:w-[48rem]"
+      class="plate card hidden w-full max-w-4xl border-1 border-gray-500 md:block lg:w-[72rem]"
     >
       <div class="card-body relative gap-4 p-4">
         <span
-          class="engraved-label pointer-events-none absolute bottom-4 left-10 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
+          class="engraved-label  pointer-events-none absolute bottom-4 left-10 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
         >
           {{ t('queue.title') }}
         </span>
