@@ -185,7 +185,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     <div
       class="plate card w-full max-w-4xl border-1 border-gray-500"
     >
-      <div class="card-body gap-6 p-6 md:p-10">
+      <div class="card-body gap-6 p-6 ">
         <header class="flex flex-col gap-4 md:flex-row md:items-center">
           <h1 class="text-2xl leading-tight font-bold md:flex-1 md:text-3xl">
             {{ t('app.title') }}
@@ -378,13 +378,13 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     <div
       class="plate card hidden w-full max-w-4xl border-1 border-gray-500 md:block lg:w-[72rem]"
     >
-      <div class="card-body relative gap-4 p-4">
+      <div class="card-body relative">
         <span
           class="engraved-label  pointer-events-none absolute bottom-4 left-10 text-4xl font-black whitespace-nowrap italic [font-synthesis:style] select-none md:text-5xl"
         >
           {{ t('queue.title') }}
         </span>
-        <div class="grid h-full grid-cols-2 gap-2 md:gap-4 md:pb-16 p-6">
+        <div class="grid h-full grid-cols-2 gap-2 md:gap-4 md:pb-18 p-6">
           <GunQueue
             :title="t('queue.gunLabel', { n: 1 })"
             :records="gun1Queue"
