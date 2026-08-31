@@ -7,7 +7,7 @@ export default {
   settings: {
     ariaLabel: 'Paramètres',
     title: 'Paramètres',
-    enableFireTime: "Activer l'heure d'impact / l'heure de tir",
+    enableFireTime: 'Activer l\'heure d\'impact / l\'heure de tir',
     done: 'Terminé',
   },
   gun: {
@@ -17,7 +17,7 @@ export default {
   },
   target: {
     panelLabel: 'Position de la cible',
-    impactTimeLabel: "Heure d'impact de la cible (format 24 h)",
+    impactTimeLabel: 'Heure d\'impact de la cible (format 24 h)',
   },
   charges: {
     panelLabel: 'Charges propulsives',
@@ -36,7 +36,7 @@ export default {
     title: 'File des canons',
     markFired: 'Marquer comme tiré',
     unmarkFired: 'Annuler le tir',
-    deleteRecord: "Supprimer l'entrée",
+    deleteRecord: 'Supprimer l\'entrée',
     chargeValue: 'Charge {n}',
     azimuthValue: 'Azimut {n}°',
     elevationValue: 'Élévation {n}',
