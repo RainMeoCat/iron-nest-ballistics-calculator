@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { FireSolution, GridCoordinate } from './lib/ballistics'
 import type { FireRecord } from './types'
 import { ListOrdered } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
@@ -13,18 +14,22 @@ import Modal from './components/Modal.vue'
 import ResultCounter from './components/ResultCounter.vue'
 import StatTile from './components/StatTile.vue'
 import TimeInputGroup from './components/TimeInputGroup.vue'
-import { CHARGE_OPTIONS, MAX_RANGE_PER_CHARGE_KM } from './constants'
+import { CHARGE_OPTIONS } from './constants'
+import { distanceKm, isWithinRange, offsetKm, solveFireSolution } from './lib/ballistics'
+import { fireTimeFor, pad, timeToSeconds } from './lib/time'
 
 const { t } = useI18n()
-
-function pad(n: number) {
-  return String(n).padStart(2, '0')
-}
 
 const gunCol = ref('A')
 const gunRow = ref(1)
 const gunSubX = ref(0)
 const gunSubY = ref(0)
+const gunCoord = computed<GridCoordinate>(() => ({
+  col: gunCol.value,
+  row: gunRow.value,
+  subX: gunSubX.value,
+  subY: gunSubY.value,
+}))
 const gunLabel = computed(
   () => `${gunCol.value}${gunRow.value} ${gunSubX.value}:${gunSubY.value}`,
 )
@@ -37,6 +42,12 @@ const targetCol = ref('A')
 const targetRow = ref(1)
 const targetSubX = ref(0)
 const targetSubY = ref(0)
+const targetCoord = computed<GridCoordinate>(() => ({
+  col: targetCol.value,
+  row: targetRow.value,
+  subX: targetSubX.value,
+  subY: targetSubY.value,
+}))
 
 const charges = ref(3)
 
@@ -46,63 +57,23 @@ const targetHourStr = ref('00')
 const targetMinuteStr = ref('00')
 const targetSecondStr = ref('00')
 
-function timeToSeconds(h: number, m: number, s: number) {
-  return h * 3600 + m * 60 + s
-}
-
-function secondsToTime(totalSeconds: number) {
-  const normalized = ((totalSeconds % 86400) + 86400) % 86400
-  const h = Math.floor(normalized / 3600)
-  const m = Math.floor((normalized % 3600) / 60)
-  const s = Math.floor(normalized % 60)
-  return `${pad(h)}:${pad(m)}:${pad(s)}`
-}
-
-interface Result {
-  distance: number
-  azimuth: number
-  elevation: number
-  flightTime: number
+interface Result extends FireSolution {
   fireTime: string
 }
 
-function toKm(col: string, row: number, subX: number, subY: number) {
-  const x = col.charCodeAt(0) - 65 + subX / 10
-  const y = row - 1 + subY / 10
-  return { x, y }
-}
+const offset = computed(() => offsetKm(gunCoord.value, targetCoord.value))
 
-function offsetToTarget() {
-  const gunPos = toKm(gunCol.value, gunRow.value, gunSubX.value, gunSubY.value)
-  const targetPos = toKm(
-    targetCol.value,
-    targetRow.value,
-    targetSubX.value,
-    targetSubY.value,
-  )
-  return { dx: targetPos.x - gunPos.x, dy: targetPos.y - gunPos.y }
-}
-
-const liveDistance = computed(() => {
-  const { dx, dy } = offsetToTarget()
-  return Math.sqrt(dx ** 2 + dy ** 2)
-})
-
-function chargeMaxRange(n: number) {
-  return n * MAX_RANGE_PER_CHARGE_KM
-}
+const liveDistance = computed(() => distanceKm(offset.value))
 
 function isChargeDisabled(n: number) {
-  return liveDistance.value > chargeMaxRange(n)
+  return !isWithinRange(liveDistance.value, n)
 }
 
 watch(
   liveDistance,
   (distance) => {
-    if (distance > chargeMaxRange(charges.value)) {
-      const nextValid = CHARGE_OPTIONS.find(
-        n => distance <= chargeMaxRange(n),
-      )
+    if (!isWithinRange(distance, charges.value)) {
+      const nextValid = CHARGE_OPTIONS.find(n => isWithinRange(distance, n))
       if (nextValid)
         charges.value = nextValid
     }
@@ -110,24 +81,20 @@ watch(
   { immediate: true },
 )
 
+const impactSeconds = computed(() =>
+  timeToSeconds(
+    Number(targetHourStr.value || 0),
+    Number(targetMinuteStr.value || 0),
+    Number(targetSecondStr.value || 0),
+  ),
+)
+
 const result = computed<Result>(() => {
-  const { dx, dy } = offsetToTarget()
-
-  const distance = liveDistance.value
-  const azimuth
-    = distance === 0 ? 0 : (Math.atan2(dx, dy) * (180 / Math.PI) + 360) % 360
-
-  const elevation = (distance * 12) / charges.value
-  const flightTime = (distance / (charges.value * 5)) * 38
-  const fireTime = secondsToTime(
-    timeToSeconds(
-      Number(targetHourStr.value || 0),
-      Number(targetMinuteStr.value || 0),
-      Number(targetSecondStr.value || 0),
-    ) - flightTime,
-  )
-
-  return { distance, azimuth, elevation, flightTime, fireTime }
+  const solution = solveFireSolution(offset.value, charges.value)
+  return {
+    ...solution,
+    fireTime: fireTimeFor(impactSeconds.value, solution.flightTime),
+  }
 })
 
 function round(n: number, digits: number) {
