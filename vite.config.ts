@@ -4,9 +4,7 @@ import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { BASE_PATH } from './base-path.ts'
 
-// https://vite.dev/config/
 export default defineConfig({
-  // 站台掛在 rainmeocat.com 的子路徑下，資產連結需帶上同樣的前綴
   base: `${BASE_PATH}/`,
   build: {
     // 輸出目錄刻意對應 BASE_PATH：Cloudflare 的資產伺服器以 dist 為根，
