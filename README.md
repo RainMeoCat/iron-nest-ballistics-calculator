@@ -43,3 +43,9 @@ npm run format      # Format with Prettier and fix lint issues
 - [Tailwind CSS](https://tailwindcss.com/)
 - [vue-i18n](https://vue-i18n.intlify.dev/)
 - [motion-v](https://motion.dev/) / [lucide-vue-next](https://lucide.dev/)
+
+## Credits
+
+- Cannon favicon by [Lorc](https://lorcblog.blogspot.com/) via
+  [game-icons.net](https://game-icons.net/1x1/lorc/cannon.html), licensed under
+  [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) — recoloured to match the app palette.
