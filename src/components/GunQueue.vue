@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { FireRecord } from '../types'
+import { useMediaQuery } from '@vueuse/core'
 import { Check, Trash2 } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
-import { useIsMobile } from '../composables/useIsMobile'
+import { MOBILE_MEDIA_QUERY } from '../constants'
 import CollapseTransition from './CollapseTransition.vue'
 import Counter from './Counter.vue'
 
@@ -18,7 +19,7 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const isMobile = useIsMobile()
+const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY)
 
 function pinPosition(el: Element) {
   const target = el as HTMLElement

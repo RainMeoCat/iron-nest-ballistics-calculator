@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { onClickOutside, onKeyStroke } from '@vueuse/core'
 import { ChevronDown } from 'lucide-vue-next'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = withDefaults(defineProps<{
   modelValue: string | number
@@ -32,25 +33,8 @@ function choose(option: string | number) {
   close()
 }
 
-function handleDocumentClick(event: MouseEvent) {
-  if (open.value && rootRef.value && !rootRef.value.contains(event.target as Node))
-    close()
-}
-
-function handleKeydown(event: KeyboardEvent) {
-  if (open.value && event.key === 'Escape')
-    close()
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleDocumentClick)
-  document.addEventListener('keydown', handleKeydown)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleDocumentClick)
-  document.removeEventListener('keydown', handleKeydown)
-})
+onClickOutside(rootRef, close)
+onKeyStroke('Escape', close)
 </script>
 
 <template>

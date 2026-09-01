@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { LocaleCode } from '../i18n'
+import { onClickOutside, onKeyStroke } from '@vueuse/core'
 import { Check, Languages } from 'lucide-vue-next'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setLocale, SUPPORTED_LANGUAGES } from '../i18n'
 
@@ -23,25 +24,8 @@ function choose(code: LocaleCode) {
   close()
 }
 
-function handleDocumentClick(event: MouseEvent) {
-  if (open.value && rootRef.value && !rootRef.value.contains(event.target as Node))
-    close()
-}
-
-function handleKeydown(event: KeyboardEvent) {
-  if (open.value && event.key === 'Escape')
-    close()
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleDocumentClick)
-  document.addEventListener('keydown', handleKeydown)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleDocumentClick)
-  document.removeEventListener('keydown', handleKeydown)
-})
+onClickOutside(rootRef, close)
+onKeyStroke('Escape', close)
 </script>
 
 <template>

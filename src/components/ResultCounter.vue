@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useIsMobile } from '../composables/useIsMobile'
+import { useMediaQuery } from '@vueuse/core'
+import { MOBILE_MEDIA_QUERY } from '../constants'
 import Counter from './Counter.vue'
 
 type PlaceValue = number | '.'
@@ -9,7 +10,7 @@ defineProps<{
   places?: PlaceValue[]
 }>()
 
-const isMobile = useIsMobile()
+const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY)
 </script>
 
 <template>

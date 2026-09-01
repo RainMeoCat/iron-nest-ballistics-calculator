@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { lockBodyScroll, unlockBodyScroll } from '../composables/useBodyScrollLock'
+import { useScrollLock } from '@vueuse/core'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
   open: boolean
@@ -11,7 +11,7 @@ const emit = defineEmits<{
 }>()
 
 const dialogRef = ref<HTMLDialogElement | null>(null)
-let isLocked = false
+const isScrollLocked = useScrollLock(document.body)
 
 function syncOpenState(isOpen: boolean) {
   const dialog = dialogRef.value
@@ -19,8 +19,7 @@ function syncOpenState(isOpen: boolean) {
     return
   if (isOpen && !dialog.open) {
     dialog.showModal()
-    lockBodyScroll()
-    isLocked = true
+    isScrollLocked.value = true
   }
   else if (!isOpen && dialog.open) {
     dialog.close()
@@ -31,19 +30,9 @@ onMounted(() => syncOpenState(props.open))
 watch(() => props.open, syncOpenState)
 
 function handleClose() {
-  if (isLocked) {
-    unlockBodyScroll()
-    isLocked = false
-  }
+  isScrollLocked.value = false
   emit('update:open', false)
 }
-
-onBeforeUnmount(() => {
-  if (isLocked) {
-    unlockBodyScroll()
-    isLocked = false
-  }
-})
 </script>
 
 <template>
