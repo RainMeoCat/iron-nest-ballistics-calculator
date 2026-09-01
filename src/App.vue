@@ -324,7 +324,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
         <div class="flex flex-col gap-4 md:flex-row">
           <button
             type="button"
-            class="btn min-h-16 flex-1 btn-lg text-xl btn-primary"
+            class="btn flex-1 btn-lg text-xl btn-primary"
             :disabled="gun1Queue.length >= 5 || result.distance === 0"
             @click="addToQueue(gun1Queue)"
           >
@@ -332,7 +332,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
           </button>
           <button
             type="button"
-            class="btn min-h-16 flex-1 btn-lg text-xl btn-primary"
+            class="btn flex-1 btn-lg text-xl btn-primary"
             :disabled="gun2Queue.length >= 5 || result.distance === 0"
             @click="addToQueue(gun2Queue)"
           >
@@ -373,7 +373,7 @@ function removeFromQueue(queue: FireRecord[], id: number) {
     <button
       type="button"
       :aria-label="t('queue.title')"
-      class="btn btn-circle btn-lg btn-primary fixed right-4 bottom-4 z-10 h-16! w-16! shadow-lg md:hidden"
+      class="btn btn-circle btn-lg btn-primary fixed right-4 bottom-4 z-10 h-14! w-14! shadow-lg md:hidden"
       @click="queueModalOpen = true"
     >
       <ListOrdered class="h-8 w-8" />
