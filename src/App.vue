@@ -162,12 +162,12 @@ function removeFromQueue(queue: FireRecord[], id: number) {
             <button
               type="button"
               :aria-label="t('settings.ariaLabel')"
-              class="btn btn-circle btn-lg btn-ghost"
+              class="btn btn-circle btn-lg btn-metal"
               @click="settingsModalOpen = true"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
+                class="h-5 w-5 md:h-6 md:w-6"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"

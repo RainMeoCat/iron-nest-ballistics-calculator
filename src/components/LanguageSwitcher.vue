@@ -33,10 +33,10 @@ onKeyStroke('Escape', close)
     <button
       type="button"
       :aria-label="t('language.ariaLabel')"
-      class="btn btn-circle btn-lg btn-ghost"
+      class="btn btn-circle btn-lg btn-metal"
       @click="toggle"
     >
-      <Languages class="h-6 w-6" />
+      <Languages class="h-5 w-5 md:h-6 md:w-6" />
     </button>
     <Transition name="dropdown-fade">
       <ul
