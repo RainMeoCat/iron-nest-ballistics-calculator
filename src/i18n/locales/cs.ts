@@ -52,4 +52,7 @@ export default {
   language: {
     ariaLabel: 'Přepnout jazyk',
   },
+  github: {
+    ariaLabel: 'Zobrazit zdrojový kód na GitHubu',
+  },
 } satisfies MessageSchema

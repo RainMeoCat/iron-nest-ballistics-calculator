@@ -50,4 +50,7 @@ export interface MessageSchema {
   language: {
     ariaLabel: string
   }
+  github: {
+    ariaLabel: string
+  }
 }

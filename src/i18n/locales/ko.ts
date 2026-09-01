@@ -52,4 +52,7 @@ export default {
   language: {
     ariaLabel: '언어 전환',
   },
+  github: {
+    ariaLabel: 'GitHub에서 소스 코드 보기',
+  },
 } satisfies MessageSchema
