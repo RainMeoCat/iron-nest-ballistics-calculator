@@ -1,0 +1,37 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "iron-nest-ballistics-calculator",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+
+  // 只在 rainmeocat.com 的子路徑提供服務，不另外開 workers.dev 網域：
+  // WAF、Rate Limiting、Cache Rules 都只作用在 zone 上，workers.dev 等於繞過防護的後門。
+  "workers_dev": false,
+  "routes": [
+    {
+      // 結尾的 * 不可省略——不帶萬用字元的模式遇到查詢字串時匹配行為不可靠
+      "pattern": "rainmeocat.com/projects/iron-nest-ballistics-calculator*",
+      "zone_name": "rainmeocat.com"
+    },
+    {
+      // apex 與 www 是兩個獨立主機，route 不會互相涵蓋。網站主體在 www（origin 為
+      // Vercel），兩個都要掛，否則打 www 的請求會落回 SPA 的 index.html 而不是本站。
+      "pattern": "www.rainmeocat.com/projects/iron-nest-ballistics-calculator*",
+      "zone_name": "rainmeocat.com"
+    }
+  ],
+
+  // dist 底下的結構已與網址路徑對應，因此不設 run_worker_first：
+  // 靜態資產直接由資產伺服器回應，不計入 Worker 請求數，也少一層轉手延遲
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    // 查無資產時交給 Worker 做 SPA fallback，而不是由資產伺服器逕自回 404
+    "not_found_handling": "none"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

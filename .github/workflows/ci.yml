@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint 與建置檢查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      # build 會先跑 vue-tsc -b，Worker 與 vite.config 都在 project references 裡，
+      # 型別壞掉就不會走到部署那一步
+      - run: npm run build
+
+  deploy:
+    name: 部署到 Cloudflare Workers
+    # 限定 main 是因為 Run workflow 可以挑分支，
+    # 不擋的話按錯就把功能分支推上線了
+    needs: check
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: cloudflare
+      url: https://rainmeocat.com/projects/iron-nest-ballistics-calculator/
+
+    # 同一時間只跑一次部署，避免兩個 wrangler deploy 互相覆蓋
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # 用 npm script 而非 cloudflare/wrangler-action：前者跑的是 lockfile
+      # 鎖住的 wrangler 版本，與本機 `npm run deploy` 完全同一條路徑；
+      # wrangler-action 會自己裝一份 wrangler，版本會漂。
+      - run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
