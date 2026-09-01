@@ -2,6 +2,8 @@
 
 [English](../README.md) · [繁體中文](README.zh-TW.md) · [简体中文](README.zh-CN.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Українська](README.uk.md) · [日本語](README.ja.md) · [Русский](README.ru.md) · [한국어](README.ko.md) · [Čeština](README.cs.md) · [Polski](README.pl.md) · Italiano · [Español (Latinoamérica)](README.es-419.md) · [Türkçe](README.tr.md)
 
+![Interfaccia del calcolatore balistico Iron Nest](screenshots/it.jpg)
+
 **[Provalo online →](https://rainmeocat.com/projects/iron-nest-ballistics-calculator)**
 
 Una calcolatrice balistica costruita con Vue 3 + TypeScript + Vite. Calcola distanza, azimut, elevazione, tempo di volo e orario di apertura del fuoco a partire dalle coordinate del cannone e dell'obiettivo, e gestisce una coda di tiro per due cannoni. L'interfaccia supporta 16 lingue.

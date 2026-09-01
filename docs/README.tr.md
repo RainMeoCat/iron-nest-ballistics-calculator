@@ -2,6 +2,8 @@
 
 [English](../README.md) · [繁體中文](README.zh-TW.md) · [简体中文](README.zh-CN.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Українська](README.uk.md) · [日本語](README.ja.md) · [Русский](README.ru.md) · [한국어](README.ko.md) · [Čeština](README.cs.md) · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español (Latinoamérica)](README.es-419.md) · Türkçe
 
+![Iron Nest Balistik Hesaplayıcı arayüzü](screenshots/tr.jpg)
+
 **[Çevrimiçi dene →](https://rainmeocat.com/projects/iron-nest-ballistics-calculator)**
 
 Vue 3 + TypeScript + Vite ile oluşturulmuş bir balistik hesap makinesi. Topun ve hedefin koordinatlarından mesafe, azimut, yükseliş açısı, uçuş süresi ve ateş zamanını hesaplar ve iki top için bir ateş kuyruğu yönetir. Arayüz 16 dili destekler.

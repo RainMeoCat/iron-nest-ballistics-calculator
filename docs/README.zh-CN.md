@@ -2,6 +2,8 @@
 
 [English](../README.md) · [繁體中文](README.zh-TW.md) · 简体中文 · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Українська](README.uk.md) · [日本語](README.ja.md) · [Русский](README.ru.md) · [한국어](README.ko.md) · [Čeština](README.cs.md) · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español (Latinoamérica)](README.es-419.md) · [Türkçe](README.tr.md)
 
+![Iron Nest 弹道计算器界面](screenshots/zh-CN.jpg)
+
 **[在线使用 →](https://rainmeocat.com/projects/iron-nest-ballistics-calculator)**
 
 一个以 Vue 3 + TypeScript + Vite 打造的火炮弹道计算工具，可依炮位与目标坐标计算距离、方位角、仰角、飞行时间与开火时机，并管理两门炮的射击队列。界面支持 16 种语言。

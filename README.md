@@ -2,6 +2,8 @@
 
 English · [繁體中文](docs/README.zh-TW.md) · [简体中文](docs/README.zh-CN.md) · [Français](docs/README.fr.md) · [Deutsch](docs/README.de.md) · [Español](docs/README.es.md) · [Português (Brasil)](docs/README.pt-BR.md) · [Українська](docs/README.uk.md) · [日本語](docs/README.ja.md) · [Русский](docs/README.ru.md) · [한국어](docs/README.ko.md) · [Čeština](docs/README.cs.md) · [Polski](docs/README.pl.md) · [Italiano](docs/README.it.md) · [Español (Latinoamérica)](docs/README.es-419.md) · [Türkçe](docs/README.tr.md)
 
+![Iron Nest Ballistics Calculator interface](docs/screenshots/en.jpg)
+
 **[Try it live →](https://rainmeocat.com/projects/iron-nest-ballistics-calculator)**
 
 A ballistics calculator built with Vue 3 + TypeScript + Vite. It computes distance, azimuth, elevation, flight time, and fire time from gun and target coordinates, and manages a fire queue for two guns. The UI supports 16 languages.
