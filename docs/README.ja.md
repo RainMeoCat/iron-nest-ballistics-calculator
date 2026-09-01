@@ -2,6 +2,8 @@
 
 [English](../README.md) · [繁體中文](README.zh-TW.md) · [简体中文](README.zh-CN.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Українська](README.uk.md) · 日本語 · [Русский](README.ru.md) · [한국어](README.ko.md) · [Čeština](README.cs.md) · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español (Latinoamérica)](README.es-419.md) · [Türkçe](README.tr.md)
 
+**[オンラインで使う →](https://rainmeocat.com/projects/iron-nest-ballistics-calculator)**
+
 Vue 3 + TypeScript + Vite で構築された弾道計算ツールです。砲と目標の座標から距離、方位角、仰角、飛翔時間、発射時刻を計算し、2門の砲の射撃キューを管理します。UI は16言語に対応しています。
 
 ## 使い方

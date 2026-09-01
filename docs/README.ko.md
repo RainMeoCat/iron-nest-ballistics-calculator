@@ -2,6 +2,8 @@
 
 [English](../README.md) · [繁體中文](README.zh-TW.md) · [简体中文](README.zh-CN.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Українська](README.uk.md) · [日本語](README.ja.md) · [Русский](README.ru.md) · 한국어 · [Čeština](README.cs.md) · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español (Latinoamérica)](README.es-419.md) · [Türkçe](README.tr.md)
 
+**[온라인으로 사용하기 →](https://rainmeocat.com/projects/iron-nest-ballistics-calculator)**
+
 Vue 3 + TypeScript + Vite로 제작된 탄도 계산기입니다. 포와 표적 좌표를 기반으로 거리, 방위각, 고각, 비행 시간, 발사 시각을 계산하며, 두 문의 포에 대한 사격 대기열을 관리합니다. UI는 16개 언어를 지원합니다.
 
 ## 사용 방법

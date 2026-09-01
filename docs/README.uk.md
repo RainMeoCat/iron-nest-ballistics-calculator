@@ -2,6 +2,8 @@
 
 [English](../README.md) · [繁體中文](README.zh-TW.md) · [简体中文](README.zh-CN.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · Українська · [日本語](README.ja.md) · [Русский](README.ru.md) · [한국어](README.ko.md) · [Čeština](README.cs.md) · [Polski](README.pl.md) · [Italiano](README.it.md) · [Español (Latinoamérica)](README.es-419.md) · [Türkçe](README.tr.md)
 
+**[Відкрити онлайн →](https://rainmeocat.com/projects/iron-nest-ballistics-calculator)**
+
 Балістичний калькулятор, створений на Vue 3 + TypeScript + Vite. Він обчислює відстань, азимут, кут піднесення, час польоту та час пострілу за координатами гармати й цілі, а також керує чергою пострілів для двох гармат. Інтерфейс підтримує 16 мов.
 
 ## Використання
